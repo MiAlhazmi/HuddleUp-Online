@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) _rb.AddForce(0, jumpForce, 0);
         _movementInput = new Vector3(_horizontalInput * speed, _jumpInput * jumpForce, _verticalInput * speed);
 
-        transform.position += _movementInput * Time.deltaTime;
+        // transform.position += _movementInput * Time.deltaTime;
+        transform.Translate(_movementInput * Time.deltaTime);
     }
 }
