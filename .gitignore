@@ -73,5 +73,7 @@ crashlytics-build.properties
 
 # Unrelevant files created by JetBrains tools
 /.idea
+/ProjectSettings/RiderScriptEditorPersistedState.asset
+*.sln.DotSettings*
 
 .DS_Store
