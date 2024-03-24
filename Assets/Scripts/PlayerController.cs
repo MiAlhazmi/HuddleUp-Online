@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviour
     private float _horizontalInput;
     private float _verticalInput;
     private float _jumpInput;
-    private Rigidbody _rb ;
+    private Rigidbody _rb;
     private Vector3 _movementInput;
-    
+
     // Start is called before the first frame update
     void Start()
     {
