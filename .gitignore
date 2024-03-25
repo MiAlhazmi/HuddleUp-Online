@@ -80,3 +80,5 @@ crashlytics-build.properties
 .vscode/settings.json
 .vscode/extensions.json
 .vscode/launch.json
+ProjectSettings/Packages/com.unity.probuilder/Settings.json
+.DS_Store
