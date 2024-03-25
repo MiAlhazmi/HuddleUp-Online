@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private float _jumpInput;
     private Rigidbody _rb ;
     private Vector3 _movementInput;
+    [SerializeField] private GameInput _gameInput;
     
     private float distToGround;
     public float maxDistance = 0.8f;
@@ -35,24 +36,22 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerNumber == 1)
+        if (playerNumber == 1) Controller();
+        if (playerNumber == 2)
         {
-            Controller();
+            Vector2 inputVector = _gameInput.GameMovementVectorNormalizedPlayer2();
+            Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+            transform.Translate(moveDir * Time.deltaTime * speed);
         }
     }
-
+    
     private void Controller()
     {
-        _horizontalInput = Input.GetAxis("Horizontal");
-        _verticalInput = Input.GetAxis("Vertical");
-        // float mouseInput = Input.GetAxis("Fire1");
+        Vector2 inputVector = _gameInput.GameMovementVectorNormalized();
+        // if (playerNumber == 2) inputVector = _gameInput.GameMovementVectorNormalizedPlayer2();
+        Vector3 moveDir = new Vector3(inputVector.x,0 , inputVector.y);
+        transform.Translate(moveDir * Time.deltaTime * speed);
         
-        // Debug.Log(IsGrounded());
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded()) _rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // _rb.AddForce(0, jumpForce, 0);
-        _movementInput = new Vector3(_horizontalInput * speed, _jumpInput * jumpForce, _verticalInput * speed);
-
-        // transform.position += _movementInput * Time.deltaTime;
-        transform.Translate(_movementInput * Time.deltaTime);
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -71,11 +70,44 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-    } 
+    }
+
+    // Legacy!!
+    void OldMovementController()
+    {
+        /* For movement and jumping: */
+        _horizontalInput = Input.GetAxis("Horizontal");
+        _verticalInput = Input.GetAxis("Vertical");
+        // float mouseInput = Input.GetAxis("Fire1");
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded()) _rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // _rb.AddForce(0, jumpForce, 0);
+        _movementInput = new Vector3(_horizontalInput * speed, _jumpInput * jumpForce, _verticalInput * speed);
+        // transform.position += _movementInput * Time.deltaTime;
+        transform.Translate(_movementInput * Time.deltaTime);
+        
+        /* for hitting: */
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 2.5f))
+            {
+                Debug.Log(hit.collider.gameObject.name);
+                if (hit.collider.CompareTag("Player")) // same as hit.collider.gameObject.tag == "Player"
+                {
+                    GameObject hitPlayerObject = hit.collider.gameObject;
+                    hitPlayerObject.transform.position += transform.forward + Vector3.up/4;
+                    PassTag(hitPlayerObject.GetComponent<PlayerController>());  // we pass the tag to the player we hit
+                    // hitPlayerObject.transform.position += Vector3.up/4;
+                    // hit.collider.gameObject.transform.position = Vector3.Slerp(hit.collider.gameObject.transform.position, transform.position,  Time.deltaTime * 10f);
+                    Debug.Log("hit a player");
+                }
+            }
+        }
+    }
     
     private bool IsGrounded()
     {
-        distToGround = GetComponent<Collider>().bounds.extents.y;
+        // distToGround = GetComponent<Collider>().bounds.extents.y;
         // Physics.Raycast(transform.position, -Vector3.up, 0.1);
         // RaycastHit hit;
         // return Physics.Raycast(transform.position, transform.TransformDirection(-Vector3.up), maxDistance);
