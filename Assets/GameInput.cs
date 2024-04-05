@@ -9,8 +9,8 @@ public class GameInput : MonoBehaviour
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _playerInputActions.Player.Enable(); // player is the action map that I created in the input actions not the gameobject
-        _playerInputActions.Player2.Enable(); // player is the action map that I created in the input actions not the gameobject
+        _playerInputActions.Player.Enable(); // Player is the action map that I created in the input actions not the gameobject
+        _playerInputActions.Player2.Enable(); // Player2 is the action map that I created in the input actions not the gameobject
 
     }
 
