@@ -119,10 +119,6 @@ MonoBehaviour:
   _destination: {x: 0, y: 0, z: 0}
   destinationFound: 0
   _speed: 11.89
-  _walkSpeed: 5
-  _sprintSpeed: 8
-  _crouchSpeed: 3
-  _jumpHeight: 1.5
 --- !u!136 &921859522325153113
 CapsuleCollider:
   m_ObjectHideFlags: 0
