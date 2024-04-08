@@ -192,7 +192,7 @@ public class CircularTimer : MonoBehaviour
         ResetTimer();
     }
 
-    void ResetTimer()
+    public void ResetTimer()
     {
         switch (fillSettings.fillDirection)
         {
