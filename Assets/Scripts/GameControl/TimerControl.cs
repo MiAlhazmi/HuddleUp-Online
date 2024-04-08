@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,5 +43,19 @@ public class TimerControl : MonoBehaviour
     {
         text.text = "Finished";
         Debug.Log("Timer finished");
+    }
+
+    public void ResetTimer(int index)
+    {
+        // circularTimers[index].ResetTimer();
+        circularTimers[index].StopTimer();
+    }
+    
+    public void ResetAllTimers()
+    {
+        foreach (var aTimer in circularTimers)
+        {
+            aTimer.ResetTimer();
+        }
     }
 }
