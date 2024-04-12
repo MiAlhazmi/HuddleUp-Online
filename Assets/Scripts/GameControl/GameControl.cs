@@ -31,6 +31,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     [SerializeField] private float minValueZ;
     [SerializeField] private float maxValueX;
     [SerializeField] private float maxValueZ;
+    [SerializeField] private float minValueY = 10f;
+    
     // Will change this with a plane for respawns
     [SerializeField] private GameObject canvasGameEnd;
     [SerializeField] private TextMeshProUGUI winnerPlayerName;
@@ -41,7 +43,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         _ctrlPlInteraction = GetComponent<CtrlPlInteraction>();
         timer = GetComponent<TimerControl>();
         _playersList = new List<GameObject>();
-        playerInputManager = PlayerInputManager.instance;
+        playerInputManager = GetComponent<PlayerInputManager>();
     }
     
     private void OnEnable()
@@ -50,7 +52,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     }
     private void OnDisable()
     {
-        playerInputManager.onPlayerJoined -= PlayerInputManagerOnPlayerJoined;
+        playerInputManager.onPlayerJoined += PlayerInputManagerOnPlayerJoined;
     }
 
     private void PlayerInputManagerOnPlayerJoined(PlayerInput playerInput)
@@ -58,6 +60,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         AddPlayer(playerInput.GameObject());
         playerInput.GameObject().name = $"Player{_playersList.Count}";
         Debug.Log("From GameControl OnPlayerJoin(): " + playerInput.GameObject().name);
+        GiveRandomPosTo(playerInput.GameObject());
     }
 
 
@@ -112,12 +115,26 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
             player.GetComponent<CharacterController>().enabled = false;     // because CharacterController component won't allow to change the position 
             float xPos = Random.Range(minValueX, maxValueX);
             float zPos = Random.Range(minValueZ, maxValueZ);
-            Vector3 pos = new Vector3(xPos, 10f, zPos);
-            player.transform.position = new Vector3(xPos, 10f, zPos);
+            Vector3 pos = new Vector3(xPos, minValueY, zPos);
+            player.transform.position = pos;
             player.GetComponent<CharacterController>().enabled = true;
         }
+    }
+    
+    private void GiveRandomPosTo(GameObject player)
+    {
+        Debug.Log("player list count: " + _playersList.Count);
+        if (_playersList.Count <= 0) return;
+        
+        player.GetComponent<CharacterController>().enabled = false;     // because CharacterController component won't allow to change the position 
+        float xPos = Random.Range(minValueX, maxValueX);
+        float zPos = Random.Range(minValueZ, maxValueZ);
+        Vector3 pos = new Vector3(xPos, minValueY, zPos);
+        player.transform.position = pos;
+        player.GetComponent<CharacterController>().enabled = true;
         
     }
+    
     private void GiveTagRandom()
     {
         if (currentTagOwner != null) return;
@@ -128,6 +145,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         SetTagOwner(_playersList[randomNumber]);
         Debug.Log("Tag was given randomly!");
     }
+    
 
     private void DestroyTagger()
     {

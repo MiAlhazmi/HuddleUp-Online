@@ -5,26 +5,16 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
-    private PlayerInputActions _playerInputActions;
+    private PlayerInputActionsDefault _playerInputActions;
     private void Awake()
     {
-        _playerInputActions = new PlayerInputActions();
+        _playerInputActions = new PlayerInputActionsDefault();
         _playerInputActions.Player.Enable(); // Player is the action map that I created in the input actions not the gameobject
-        _playerInputActions.Player2.Enable(); // Player2 is the action map that I created in the input actions not the gameobject
-
     }
 
     public Vector2 GameMovementVectorNormalized()
     {
         Vector2 inputVector = _playerInputActions.Player.Move.ReadValue<Vector2>();
-        inputVector = inputVector.normalized;
-
-        return inputVector;
-    }
-    
-    public Vector2 GameMovementVectorNormalizedPlayer2()
-    {
-        Vector2 inputVector = _playerInputActions.Player2.Move.ReadValue<Vector2>();
         inputVector = inputVector.normalized;
 
         return inputVector;

@@ -66,7 +66,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 80
+  field of view: 95
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -468,6 +468,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _hitDistance: 4
+  testLineCast: 1
 --- !u!114 &1567662165816452127
 MonoBehaviour:
   m_ObjectHideFlags: 0
