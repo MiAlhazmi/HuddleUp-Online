@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 346351764}
   - component: {fileID: 346351763}
   - component: {fileID: 346351762}
+  - component: {fileID: 346351765}
   m_Layer: 5
   m_Name: Login
   m_TagString: Untagged
@@ -419,9 +420,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 347347362}
-        m_TargetAssemblyTypeName: NextScene, Assembly-CSharp
-        m_MethodName: GoToMainMenu
+      - m_Target: {fileID: 346351765}
+        m_TargetAssemblyTypeName: APICalls.Login, Assembly-CSharp
+        m_MethodName: OnLoginButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -469,6 +470,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346351760}
   m_CullTransparentMesh: 1
+--- !u!114 &346351765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346351760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e0ec74b5229848db9cebf3f7af3c75c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usernameField: {fileID: 626583031}
+  passwordField: {fileID: 1930163264}
+  loginMessage: {fileID: 0}
 --- !u!1 &347347357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1060,7 +1076,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0013122559}
+  m_AnchoredPosition: {x: 0, y: 0.0013427734}
   m_SizeDelta: {x: -1320, y: -255.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &964652734

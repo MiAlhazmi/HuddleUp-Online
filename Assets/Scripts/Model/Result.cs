@@ -2,9 +2,9 @@ namespace Model
 {
     public class Result<T>
     {
-        public bool IsSuccess { get; private set; } // Public getter, private setter
-        public T Data { get; private set; } // Public getter, private setter
-        public string Message { get; private set; } // Public getter, private setter
+        public bool IsSuccess { get; set; } // Public getter, private setter
+        public T Data { get; set; } // Public getter, private setter
+        public string Message { get; set; } // Public getter, private setter
 
         public Result(bool success, T data, string message)
         {

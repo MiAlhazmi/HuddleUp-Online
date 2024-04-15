@@ -7,13 +7,15 @@ namespace APICalls
     using Model;
     using UnityEngine.Networking;
     using UnityEngine.UI; // for DateTime parsing
-
+    using UnityEngine.SceneManagement;
+    using TMPro;
+    
     public class Signup : MonoBehaviour
     {
-        public InputField usernameField;
-        public InputField passwordField;
-        public InputField emailField;
-        public InputField dobField;
+        public TMP_InputField usernameField;
+        public TMP_InputField passwordField;
+        public TMP_InputField emailField;
+        public TMP_InputField dobField;
 
         public Text signupMessage; // Text object to display signup message
 
@@ -32,66 +34,57 @@ namespace APICalls
         }
 
         // Function to try parsing date and handle exceptions
-        private bool ValidateDobFormat(string dobString)
+        public string ConvertDoBFormat(string dobString)
         {
-            // Check if the string length is 8 characters (YYYYMMDD)
             if (dobString.Length != 8)
             {
-                signupMessage.text = "Invalid DoB format. Please use YYYYMMDD.";
-                return false;
+                throw new ArgumentException("Invalid DoB format. Please use YYYYMMDD.");
             }
 
-            try
+            // Extract year, month, and day (assuming valid format)
+            string year = dobString.Substring(0, 4);
+            string month = dobString.Substring(4, 2);
+            string day = dobString.Substring(6, 2);
+
+            // Try parsing the extracted values as integers
+            int yearInt, monthInt, dayInt;
+            if (!int.TryParse(year, out yearInt) || !int.TryParse(month, out monthInt) || !int.TryParse(day, out dayInt))
             {
-                // Convert the string to integer for basic validation
-                int year = int.Parse(dobString.Substring(0, 4));
-                int month = int.Parse(dobString.Substring(4, 2));
-                int day = int.Parse(dobString.Substring(6, 2));
-
-                // Validate month (1-12)
-                if (month < 1 || month > 12)
-                {
-                    signupMessage.text = "Invalid month (must be between 1 and 12).";
-                    return false;
-                }
-
-                // Validate day based on month (considering leap years is complex)
-                int maxDay = DateTime.DaysInMonth(year, month);
-                if (day < 1 || day > maxDay)
-                {
-                    signupMessage.text = "Invalid day for the chosen month.";
-                    return false;
-                }
-
-                // If all validations pass, format the date as YYYY-MM-DD
-                dobString = string.Format("{0:0000}-{1:00}-{2:00}", year, month, day);
-                return true;
+                throw new ArgumentException("Invalid DoB format. Please use YYYYMMDD.");
             }
-            catch (FormatException)
+
+            // Validate date (month range 1-12, day range based on month)
+            if (monthInt < 1 || monthInt > 12 || dayInt < 1 || dayInt > DateTime.DaysInMonth(yearInt, monthInt))
             {
-                signupMessage.text = "Invalid DoB format. Please use YYYYMMDD.";
-                return false;
+                throw new ArgumentException("Invalid DoB. Please enter a valid date.");
             }
+
+            // Check for date after Jan 1 2018
+            DateTime cutoffDate = new DateTime(2018, 1, 1);
+            DateTime parsedDate = new DateTime(yearInt, monthInt, dayInt);
+            if (parsedDate > cutoffDate)
+            {
+                throw new ArgumentException("DoB cannot be after January 1st, 2018.");
+            }
+
+            // Format the date string with hyphens (if all validations pass)
+            return year + "-" + month + "-" + day;
         }
+
 
         public void OnSignupButtonClick()
         {
             string username = usernameField.text;
             string password = passwordField.text;
             string email = emailField.text;
-            string dobString = dobField.text;
-
+            string dobHolder = dobField.text;
+            string dobString = ConvertDoBFormat(dobHolder);
+            
             // Validate password format
             if (!IsValidPassword(password))
             {
                 signupMessage.text = "Password is invalid. Please refer to password requirements.";
                 return; // Early exit if password is invalid
-            }
-
-            // Validate DoB format
-            if (!ValidateDobFormat(dobString))
-            {
-                return; // Early exit if DoB format is invalid
             }
 
             StartCoroutine(SignupRequest(username, password, email, dobString));
@@ -100,7 +93,12 @@ namespace APICalls
         IEnumerator SignupRequest(string username, string password, string email, string dob) {
             // Create SignupObject (assuming SignupRequest class exists)
             SignupObject signupObject = new SignupObject(username, password, email, dob);
+
             string jsonData = JsonUtility.ToJson(signupObject);
+            Debug.Log(jsonData);
+            
+            // string jsonData = $"{{\"username\":\"{signupObject.Username}\",\"password\":\"{signupObject.Password}\",\"email\":\"{signupObject.Email}\",\"dob\":\"{signupObject.Dob}\"}}";
+            // Debug.Log(jsonData);           
 
             var url = "http://localhost:8080/api/auth/signup"; // Replace with your backend URL
             UnityWebRequest request = new UnityWebRequest(url, "POST");
@@ -119,6 +117,7 @@ namespace APICalls
             else
             {
                 string response = request.downloadHandler.text;
+                Debug.Log(response);
                 // Assuming JSON response with a Result object containing a User object
                 Result<User> signupResult = JsonUtility.FromJson<Result<User>>(response);
 
@@ -127,9 +126,12 @@ namespace APICalls
                     signupMessage.text = "Signup successful! Please login.";
                     // Parse the received User object
                     User user = JsonUtility.FromJson<User>(signupResult.Data.ToString());
-
+                
                     // Store the User object for future requests
                     _currentUser = user;
+                    
+                    // Handle successful login (e.g., transition to another scene)
+                    SceneManager.LoadScene("Scenes/Login/Login");
                 }
                 else
                 {

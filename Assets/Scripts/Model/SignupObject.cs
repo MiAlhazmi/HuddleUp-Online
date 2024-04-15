@@ -2,10 +2,10 @@ namespace Model
 {
     public class SignupObject
     {
-        private string username;
-        private string password;
-        private string email;
-        private string dob;
+        public string username;
+        public string password;
+        public string email;
+        public string dob;
 
         public string Username
         {
@@ -16,7 +16,7 @@ namespace Model
         public string Password
         {
             get { return password; }
-            set { password = value; } // Example: Hash password before setting
+            set { password = value; } 
         }
 
         public string Email
@@ -38,5 +38,7 @@ namespace Model
             Email = email;
             Dob = dob;
         }
+        
+        
     }
 }

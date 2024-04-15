@@ -9,11 +9,11 @@ namespace APICalls
     using UnityEngine.SceneManagement;
     using UnityEngine.UI;
     using static System.Text.Encoding; // for UnityWebRequest
-
+    using TMPro;
     public class Login : MonoBehaviour
     {
-        public InputField usernameField;
-        public InputField passwordField;
+        public TMP_InputField usernameField;
+        public TMP_InputField passwordField;
         public Text loginMessage; // Text object to display login message
 
         private UserInfo _currentUser; // Stores the received user object (optional) of type UserInfo
@@ -27,7 +27,6 @@ namespace APICalls
         {
             string username = usernameField.text;
             string password = passwordField.text;
-
             StartCoroutine(LoginRequest(username, password));
         }
 
