@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO: Enum for the timers
 public class TimerControl : MonoBehaviour
 {
     public CircularTimer[] circularTimers;
@@ -18,6 +19,7 @@ public class TimerControl : MonoBehaviour
 
     public void StartTimerNumber(int index)
     {
+        circularTimers[index].gameObject.SetActive(true);
         circularTimers[index].StartTimer();
     }
 
@@ -57,5 +59,10 @@ public class TimerControl : MonoBehaviour
         {
             aTimer.ResetTimer();
         }
+    }
+
+    public CircularTimer GetTimer(int index)
+    {
+        return circularTimers[index];
     }
 }

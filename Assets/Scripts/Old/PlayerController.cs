@@ -36,13 +36,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerNumber == 1) Controller();
-        if (playerNumber == 2)
-        {
-            Vector2 inputVector = _gameInput.GameMovementVectorNormalizedPlayer2();
-            Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
-            transform.Translate(moveDir * Time.deltaTime * speed);
-        }
+        Controller();
     }
     
     private void Controller()

@@ -6,6 +6,12 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _controller;
+    // private Animator _animator;
+    private bool isWalking;
+    private bool isSprinting;
+    private bool isCrouching;
+    private bool isJumping;
+    
     private Vector3 _playerVelocity = Vector3.zero;
     private bool _isGrounded;
     private bool _lerpCrouch = false, _crouching = false, _sprinting = false;
@@ -17,12 +23,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _crouchSpeed = 3;
     private const float Gravity = -9.8f;
     [SerializeField] private float _jumpHeight = 1.5f;
+    private float playerHeight;
+    private float playerCrouchHeight;
     
     
     // Start is called before the first frame update
     void Start()
     {
         _controller = GetComponent<CharacterController>();
+        // _animator = GetComponent<Animator>();
+        playerHeight = _controller.height;
+        playerCrouchHeight = playerHeight / 2f;
     }
 
     // Update is called once per frame
@@ -54,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     public void ProcessMove(Vector2 input)
     {
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
+        isWalking = moveDir != Vector3.zero; // for animation: to check if the character is walkingwaw
         _controller.Move(transform.TransformDirection(moveDir) * Time.deltaTime * _speed);
         _playerVelocity.y += Gravity * Time.deltaTime;
         if (_isGrounded && _playerVelocity.y < 0)
@@ -101,5 +113,14 @@ public class PlayerMovement : MonoBehaviour
         // bara
         _crouchTimer = 0;
         _lerpCrouch = true;
+    }
+    
+    public bool GetIsWalking()
+    {
+        return isWalking;
+    }
+    public bool GetIsSprinting()
+    {
+        return isSprinting;
     }
 }

@@ -14,8 +14,8 @@ public class PlayerLook : MonoBehaviour
     private void Start()
     {
         // Lock and hide the cursor
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
 
         xSensitivity *= 10;
         ySensitivity *= 10;
