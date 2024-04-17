@@ -13,6 +13,6 @@ public class StartButtonInteract : Interactable
 
     protected override void Interact()
     {
-        _gameControl.StartGameTimer();
+        _gameControl.OnStartButtonClicked();
     }
 }

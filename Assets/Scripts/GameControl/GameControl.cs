@@ -6,17 +6,24 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 // This class should be a parent abstract class and every gamemode extends from it
 public class GameControl : MonoBehaviour, PlayerToGameControl
 {
+    public static GameControl Instance;
+    
     private CtrlPlInteraction _ctrlPlInteraction;
 
     private TimerControl timer;
     [SerializeField] private GameObject startGameTimerObj;
     [SerializeField] private GameObject gameTimerObj;
     [SerializeField] private GameObject startRoundTimerObj;
+    [SerializeField] private GameObject loaderTimerObj;
+    [SerializeField] private GameObject pauseMenuObj;
+    private PauseMenu pauseMenu;
+
     
     private List<GameObject> _playersList;
 
@@ -27,23 +34,35 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     [SerializeField] private int numberOfRounds;     // determine how many rounds depends on how many player there are
     [SerializeField] private int roundNumber = 0;
     
+    // Todo: Will change this with a plane for respawns
     [SerializeField] private float minValueX;
     [SerializeField] private float minValueZ;
     [SerializeField] private float maxValueX;
     [SerializeField] private float maxValueZ;
     [SerializeField] private float minValueY = 10f;
+    [SerializeField] private GameObject respawnLand;
     
-    // Will change this with a plane for respawns
     [SerializeField] private GameObject canvasGameEnd;
     [SerializeField] private TextMeshProUGUI winnerPlayerName;
     private PlayerInputManager playerInputManager;
     
     private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        
         _ctrlPlInteraction = GetComponent<CtrlPlInteraction>();
         timer = GetComponent<TimerControl>();
         _playersList = new List<GameObject>();
         playerInputManager = GetComponent<PlayerInputManager>();
+
+        pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
+        ChangePlayerRespawnPos();
     }
     
     private void OnEnable()
@@ -52,14 +71,53 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     }
     private void OnDisable()
     {
-        playerInputManager.onPlayerJoined += PlayerInputManagerOnPlayerJoined;
+        if (playerInputManager != null)
+            playerInputManager.onPlayerJoined -= PlayerInputManagerOnPlayerJoined;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseMenu.isPaused)
+            {
+                pauseMenu.Resume();
+            }
+            else
+            {
+                pauseMenu.Pause();
+            }
+        }
+    }
+
+    public void OnStartButtonClicked()
+    {
+        foreach (var player in _playersList)
+        {
+            DontDestroyOnLoad(player);
+        }
+
+        // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        // if (SceneManager.sceneCount > nextSceneIndex)
+        // {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // }
+        timer.StartTimerNumber(3); // for the loading timer
+        // ChangePlayerRespawnPos();
+        // StartGameTimer();
+    }
+
+    private void ChangePlayerRespawnPos()
+    {
+        Debug.Log("Looking for a respawn land... ");
+        respawnLand = null;
+        respawnLand = GameObject.FindGameObjectWithTag("Respawn");
+    }
     private void PlayerInputManagerOnPlayerJoined(PlayerInput playerInput)
     {
         AddPlayer(playerInput.GameObject());
         playerInput.GameObject().name = $"Player{_playersList.Count}";
-        Debug.Log("From GameControl OnPlayerJoin(): " + playerInput.GameObject().name);
+        Debug.Log("From GameControl OnPlayerJoin(): " + playerInput.GameObject().name + " Joined the lobby");
         GiveRandomPosTo(playerInput.GameObject());
     }
 
@@ -110,6 +168,20 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     {
         Debug.Log("player list count: " + _playersList.Count);
         if (_playersList.Count <= 0) return;
+
+        if (respawnLand != null)
+        {
+            Transform respawnTransform = respawnLand.transform;
+            Vector3 respawnPos = respawnTransform.position;
+            Vector3 respawnScale = respawnTransform.localScale;
+
+            minValueX = respawnPos.x - respawnScale.x / 2f;
+            maxValueX = respawnPos.x + respawnScale.x / 2f;
+            minValueZ = respawnPos.z - respawnScale.z / 2f;
+            maxValueZ = respawnPos.z + respawnScale.z / 2f;
+            minValueY = respawnPos.y + 10f;
+        }
+        
         foreach (var player in _playersList)
         {
             player.GetComponent<CharacterController>().enabled = false;     // because CharacterController component won't allow to change the position 
@@ -149,6 +221,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
 
     private void DestroyTagger()
     {
+        if (currentTagOwner == null) return;
+        
         _playersList.Remove(currentTagOwner);
         ShowPlayerList();
         currentTagOwner.SetActive(false);
@@ -158,6 +232,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     private void AnnounceWinner()
     {
         if (!winner.IsUnityNull()) winnerPlayerName.text = winner.name;
+        timer.StartTimerNumber(4); // maybe I don;t need to turn it on
+        
     }
     public void HasHit(GameObject hitter, GameObject target)
     {
@@ -167,21 +243,26 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
 
     public void StartGameTimer()
     {
+        ChangePlayerRespawnPos();
+        loaderTimerObj.SetActive(false);
         startGameTimerObj.SetActive(true);
         timer.StartTimerNumber(1); // this starts the GameStartingTimer
         numberOfRounds = _playersList.Count - 1;
         playerInputManager.DisableJoining();
+        GiveRandomPos();
     }
     // StartGame() -> start the timer, unfreeze, call giveTagRandom()
     public void StartGame()
     {
+        ChangePlayerRespawnPos();
+
         Debug.Log("StartGame() is called");
-        if (numberOfRounds < 1)
-        {
-            Debug.Log("There are no enough players!");
-            playerInputManager.EnableJoining();
-            return;
-        }
+        // if (numberOfRounds < 1) // Todo: should be 1 not 0
+        // {
+        //     Debug.Log("There are no enough players!");
+        //     playerInputManager.EnableJoining();
+        //     return;
+        // }
         
         startGameTimerObj.SetActive(false);
         gameTimerObj.SetActive(true);
@@ -206,13 +287,12 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         // Get rid of the tagger!! DestroyTagger(): unity particle system
         DestroyTagger();
         // GivePointsToSurvivors
-        if (roundNumber == numberOfRounds)
+        if (roundNumber >= numberOfRounds)
         {
             EndGame();
         }
         else
         {
-            
             startRoundTimerObj.SetActive(true);
             timer.StartTimerNumber(2);
             // StartRound();
@@ -220,11 +300,24 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     }
     public void EndGame()
     {
-        Debug.Log("EndGame() is called");
         SetWinner();
         AnnounceWinner();
         canvasGameEnd.SetActive(true);
-        Time.timeScale = 0;
+        // Time.timeScale = 0;
+    }
+
+    public void QuitGame()
+    {
+        var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (SceneManager.sceneCount > nextSceneIndex)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            // Destroy(gamecontrol); & players
+            SceneManager.LoadScene("MainMenu_Scene");
+        }
     }
     
     public GameObject GetTagOwner()
