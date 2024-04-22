@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace APICalls
 {
     using System.Collections;
@@ -17,14 +19,16 @@ namespace APICalls
         public TMP_InputField emailField;
         public TMP_InputField dobField;
 
-        public Text signupMessage; // Text object to display signup message
+        public TMP_Text signupMessage; // Text object to display signup message
 
-        private User _currentUser; // Stores the received User object
+        public User currentUser; // Stores the received User object
 
-        public User GetCurrentUser()
+        public User CurrentUser
         {
-            return _currentUser;
+            get => currentUser;
+            set => currentUser = value;
         }
+
 
         // Function to validate password format
         private static bool IsValidPassword(string password)
@@ -38,7 +42,9 @@ namespace APICalls
         {
             if (dobString.Length != 8)
             {
-                throw new ArgumentException("Invalid DoB format. Please use YYYYMMDD.");
+                signupMessage.text = "Invalid DoB format. Please use YYYYMMDD format";
+                signupMessage.color = Color.red;
+                // throw new ArgumentException("Invalid DoB format. Please use YYYYMMDD.");
             }
 
             // Extract year, month, and day (assuming valid format)
@@ -84,6 +90,7 @@ namespace APICalls
             if (!IsValidPassword(password))
             {
                 signupMessage.text = "Password is invalid. Please refer to password requirements.";
+                signupMessage.color = Color.red;
                 return; // Early exit if password is invalid
             }
 
@@ -95,7 +102,6 @@ namespace APICalls
             SignupObject signupObject = new SignupObject(username, password, email, dob);
 
             string jsonData = JsonUtility.ToJson(signupObject);
-            Debug.Log(jsonData);
             
             // string jsonData = $"{{\"username\":\"{signupObject.Username}\",\"password\":\"{signupObject.Password}\",\"email\":\"{signupObject.Email}\",\"dob\":\"{signupObject.Dob}\"}}";
             // Debug.Log(jsonData);           
@@ -113,6 +119,7 @@ namespace APICalls
             {
                 Debug.LogError("Error during signup request: " + request.error);
                 signupMessage.text = "Signup failed! Check the console for details.";
+                signupMessage.color = Color.red;
             }
             else
             {
@@ -120,22 +127,24 @@ namespace APICalls
                 Debug.Log(response);
                 // Assuming JSON response with a Result object containing a User object
                 Result<User> signupResult = JsonUtility.FromJson<Result<User>>(response);
-
-                if (signupResult.IsSuccess)
-                {
-                    signupMessage.text = "Signup successful! Please login.";
-                    // Parse the received User object
-                    User user = JsonUtility.FromJson<User>(signupResult.Data.ToString());
                 
+                Debug.Log("success: " + signupResult.success + " data: " + signupResult.data + " Message: " + signupResult.message);
+                
+                Debug.Log(signupResult.Data);
+
+                if (signupResult.Success)
+                {
+                    signupMessage.text =  "Signup successful! Please login.";
                     // Store the User object for future requests
-                    _currentUser = user;
+                    currentUser = signupResult.Data;
                     
                     // Handle successful login (e.g., transition to another scene)
-                    SceneManager.LoadScene("Scenes/Login/Login");
+                    SceneManager.LoadScene("Login");
                 }
                 else
                 {
-                    signupMessage.text = "Signup failed! " + signupResult.Message;
+                    signupMessage.text = "Signup failed! " + signupResult.message;
+                    signupMessage.color = Color.green;
                 }
             }
         }
