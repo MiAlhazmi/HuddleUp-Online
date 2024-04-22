@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _controller;
     // private Animator _animator;
-    private bool isWalking;
-    private bool isSprinting;
+    public bool isWalking;
+    public bool isSprinting;
     private bool isCrouching;
     private bool isJumping;
     

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class FirstPersonCamera : MonoBehaviour
 {
     public Transform player;
-    [SerializeField] private float mouseSensitivity = 0.5f;
+    //[SerializeField] private float mouseSensitivity = 0.5f;
     private float _cameraVerticalRotation = 0f;
     private Vector2 look = Vector2.zero;
     [SerializeField] private Vector3 cameraOffset = new Vector3(0, 0.7f, 0.3f);
