@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerHit : MonoBehaviour
 {
+    //for sounds
+    private AudioSource audiosrc; 
     private Camera _cam; // we need this to know where the player is aiming at.
     private PlayerToGameControl _gameControl;
     // private Player playerClass; // This's the player's component of the player game object  
@@ -27,6 +29,7 @@ public class PlayerHit : MonoBehaviour
     void Start()
     {
         _cam = GetComponent<PlayerLook>().GetCam(); // because we already have a camera on PLayerLook script which is attached to the player gameobject
+        audiosrc = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

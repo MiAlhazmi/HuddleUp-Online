@@ -47,7 +47,7 @@ public class CircularTimer : MonoBehaviour
     public UnityEvent didFinishedTimerTime;
 
     public float CurrentTime { get; private set; }
-    float AfterImageTime;
+    //float AfterImageTime;
 
     bool isPaused = true;
 
@@ -187,7 +187,7 @@ public class CircularTimer : MonoBehaviour
     public void StopTimer()
     {
         CurrentTime = 0;
-        AfterImageTime = 0;
+        //AfterImageTime = 0;
         isPaused = true;
         ResetTimer();
     }
