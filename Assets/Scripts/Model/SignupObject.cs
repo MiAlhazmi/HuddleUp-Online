@@ -1,5 +1,8 @@
+using System;
+
 namespace Model
 {
+    [Serializable]
     public class SignupObject
     {
         public string username;

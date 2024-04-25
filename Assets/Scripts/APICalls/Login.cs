@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace APICalls
 {
     using System.Collections;
@@ -14,14 +16,18 @@ namespace APICalls
     {
         public TMP_InputField usernameField;
         public TMP_InputField passwordField;
-        public Text loginMessage; // Text object to display login message
+        public TMP_Text loginMessage; // Text object to display login message
+        
+        private const string saveFileName = "userData.dat";
 
-        private UserInfo _currentUser; // Stores the received user object (optional) of type UserInfo
+        private UserInfo currentUser; // Stores the received userInfo object (optional) of type UserInfo
 
-        public UserInfo GetCurrentUser()
+        public UserInfo CurrentUser
         {
-            return _currentUser;
+            get { return currentUser; }
+            set { currentUser = value; }
         }
+
 
         public void OnLoginButtonClick()
         {
@@ -48,31 +54,75 @@ namespace APICalls
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.LogError("Error during login request: error " + request.error);
-                loginMessage.text = "Login failed! Check the console for details.";
+                loginMessage.text = "Login failed!";
+                loginMessage.color = Color.red;
             }
             else
             {
                 string response = request.downloadHandler.text;
-
-                // Assuming JSON response with a Result object (check your backend implementation)
+                
+                Debug.Log(response);
+                
+                // Assuming JSON response with a Result object (check backend implementation)
                 Result<UserInfo> loginResult = JsonUtility.FromJson<Result<UserInfo>>(response);
 
-                if (loginResult.IsSuccess)
+                if (loginResult.success && loginResult.Data != null)
                 {
-                    loginMessage.text = loginResult.Message;
-
-                    // Assuming UserInfoResponse is included in the data field (check backend)
-                    UserInfo userInfo = loginResult.Data;
+                    loginMessage.text = loginResult.message;
+                    loginMessage.color = Color.green;
 
                     // Optionally store user info for future use
-                    _currentUser = userInfo; // Now currentUser is of type UserInfo
+                    currentUser = loginResult.Data; // Now currentUser is of type UserInfo
 
                     // Handle successful login (e.g., transition to another scene)
-                    SceneManager.LoadScene("PlayMenu");
+                    SceneManager.LoadScene("MainMenu_Scene");
                 }
                 else
                 {
-                    loginMessage.text = "Login failed! " + loginResult.Message;
+                    loginMessage.text = "Login failed! " + loginResult.message;
+                    loginMessage.color = Color.red;
+                }
+            }
+        }
+        
+        private void SaveUserData(UserInfo userInfo, bool isLoggedIn)
+        {
+            string dataToSave = JsonUtility.ToJson(new UserSaveData(userInfo, isLoggedIn));
+
+            try
+            {
+                File.WriteAllText(Path.Combine(Application.persistentDataPath, saveFileName), dataToSave);
+                Debug.Log("User data saved successfully!");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error saving user data: " + e.Message);
+                // Handle potential saving errors (e.g., display a message to the user)
+            }
+        }
+
+        void Awake()
+        {
+            // Check if user data file exists and load data on awake
+            string filePath = Path.Combine(Application.persistentDataPath, saveFileName);
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    string dataFromFile = File.ReadAllText(filePath);
+                    UserSaveData savedData = JsonUtility.FromJson<UserSaveData>(dataFromFile);
+                    currentUser = savedData.userInfo;
+
+                    if (savedData.isLoggedIn)
+                    {
+                        // Skip login if flag is true (handle transition to next scene)
+                        SceneManager.LoadScene("MainMenu_Scene");
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError("Error loading user data: " + e.Message);
+                    // Handle potential loading errors (e.g., delete corrupted data or prompt user to re-login)
                 }
             }
         }
