@@ -12,8 +12,6 @@ public class PlayerInteract : MonoBehaviour
     private PlayerUI _playerUI;
     private MyPlayerInputManager _inputManager;
 
-    private int test;
-    
     private bool _didInteract;  // to check if the player pressed the interaction button
 
     private void Awake()

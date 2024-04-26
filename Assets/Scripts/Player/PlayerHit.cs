@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class PlayerHit : MonoBehaviour
 {
-    //for sounds
     private Camera _cam; // we need this to know where the player is aiming at.
     private PlayerToGameControl _gameControl;
-    private PlayerSoundEffects _soundEffects;
     // private Player playerClass; // This's the player's component of the player game object  
     [SerializeField] private LayerMask _playerLayerMask;
     // private PlayerAnimation _animation;
@@ -22,7 +20,6 @@ public class PlayerHit : MonoBehaviour
         _playerLayerMask = LayerMask.GetMask("Player");
         // _animation = GetComponent<PlayerAnimation>();
         _gameControl = FindObjectOfType<GameControl>().GetComponent<GameControl>();
-        _soundEffects = GetComponent<PlayerSoundEffects>();
         // playerClass = GetComponent<Player>();
     }
 
@@ -94,7 +91,6 @@ public class PlayerHit : MonoBehaviour
             Debug.Log("A player was Hit!");
             _gameControl.HasHit(gameObject, hitTarget3.collider.gameObject);
         }
-        _soundEffects.PlaySound();
     }
 
     public void GetHit(Vector3 hitDirection)

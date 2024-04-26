@@ -6,7 +6,6 @@ namespace APICalls
     using System.Text;
     using Model;
     using UnityEngine;
-// for JSON encoding
     using UnityEngine.Networking;
     using UnityEngine.SceneManagement;
     using UnityEngine.UI;
