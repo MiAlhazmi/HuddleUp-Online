@@ -18,7 +18,7 @@ namespace APICalls
         public TMP_InputField passwordField;
         public TMP_Text loginMessage; // Text object to display login message
         
-        private const string saveFileName = "userData.dat";
+        private const string saveFileName = "userData.json";
 
         private UserInfo currentUser; // Stores the received userInfo object (optional) of type UserInfo
 
@@ -73,6 +73,8 @@ namespace APICalls
 
                     // Optionally store user info for future use
                     currentUser = loginResult.Data; // Now currentUser is of type UserInfo
+                    
+                    SaveUserData(currentUser,true);
 
                     // Handle successful login (e.g., transition to another scene)
                     SceneManager.LoadScene("MainMenu_Scene");
@@ -92,6 +94,7 @@ namespace APICalls
             try
             {
                 File.WriteAllText(Path.Combine(Application.persistentDataPath, saveFileName), dataToSave);
+                Debug.Log(Application.persistentDataPath);
                 Debug.Log("User data saved successfully!");
             }
             catch (System.Exception e)
