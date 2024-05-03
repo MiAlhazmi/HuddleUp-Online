@@ -8,12 +8,12 @@ public abstract class Interactable : MonoBehaviour
     public string promptMessage;
 
     // this function will be called by our player
-    public void BaseInteract()
+    public void BaseInteract(GameObject playerGameObj)
     {
-        Interact();
+        Interact(playerGameObj);
     }
     
-    protected virtual void Interact()
+    protected virtual void Interact(GameObject playerGameObj)
     {
         // we wont have any code written in this function
         // this is just a template function to be overridden by or subclasses.

@@ -11,7 +11,7 @@ public class LampInteract : Interactable
         _lamp = GetComponent<Lamp>();
     }
     
-    protected override void Interact()
+    protected override void Interact(GameObject playerGameObj)
     {
         Debug.Log("Interacted with " + gameObject.name);
         _lamp.OnButtonClicked();

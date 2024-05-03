@@ -78,7 +78,7 @@ public class NewBehaviourScript : MonoBehaviour
     public void PlayButton()
     {
         // SceneManager.LoadScene(PlayMenu);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("PlaygroundScene");
     }
 
     public void ViewStatsYes()

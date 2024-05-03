@@ -11,7 +11,7 @@ public class StartButtonInteract : Interactable
         promptMessage = "Click to start the game";
     }
 
-    protected override void Interact()
+    protected override void Interact(GameObject playerGameObj)
     {
         _gameControl.OnStartButtonClicked();
     }
