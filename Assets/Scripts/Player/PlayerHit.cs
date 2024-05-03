@@ -9,7 +9,8 @@ public class PlayerHit : MonoBehaviour
     private PlayerToGameControl _gameControl;
     // private Player playerClass; // This's the player's component of the player game object  
     [SerializeField] private LayerMask _playerLayerMask;
-    // private PlayerAnimation _animation;
+    private PlayerAnimation _animation;
+    private PlayerUI _playerUI;
     
     [SerializeField] private float _hitDistance = 4f;
 
@@ -18,8 +19,9 @@ public class PlayerHit : MonoBehaviour
     private void Awake()
     {
         _playerLayerMask = LayerMask.GetMask("Player");
-        // _animation = GetComponent<PlayerAnimation>();
         _gameControl = FindObjectOfType<GameControl>().GetComponent<GameControl>();
+        _animation = GetComponent<PlayerAnimation>();
+        _playerUI = GetComponent<PlayerUI>();
         // playerClass = GetComponent<Player>();
     }
 
@@ -53,9 +55,10 @@ public class PlayerHit : MonoBehaviour
     //     // Debug.Log("Forward: " + ray.direction);
     // }   
 
+    // TODO: This function should be broken down to multiple funtions
     public void Hit()
     {
-        // _animation.IsHittingTrigger(); // for animation
+        _animation.IsHittingTrigger(); // for animation
         Transform camTransform = _cam.transform;        // TODO: I should take the cam Transform in the attribute instead of the whole object
         Vector3 camPos = camTransform.position;
         Vector3 camTransformForward = camTransform.forward;

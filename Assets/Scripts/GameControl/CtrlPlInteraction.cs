@@ -45,6 +45,7 @@ public class CtrlPlInteraction : MonoBehaviour
         // target.GetComponent<PlayerHit>().GetHit(hitDirection);
         // target.transform.position += (Vector3.up * 3);
         target.GetComponent<CharacterController>().Move(hitDirection + Vector3.up / 4);
+        target.GetComponent<PlayerUI>().TakeDamageUI();
     }
 
     private void TransferTag(GameObject fromPlayer, GameObject toTarget)

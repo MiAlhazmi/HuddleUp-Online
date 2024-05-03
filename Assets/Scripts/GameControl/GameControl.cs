@@ -90,22 +90,6 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         }
     }
 
-    public void OnStartButtonClicked()
-    {
-        foreach (var player in _playersList)
-        {
-            DontDestroyOnLoad(player);
-        }
-
-        // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        // if (SceneManager.sceneCount > nextSceneIndex)
-        // {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        // }
-        timer.StartTimerNumber(3); // for the loading timer
-        // ChangePlayerRespawnPos();
-        // StartGameTimer();
-    }
 
     private void ChangePlayerRespawnPos()
     {
@@ -240,6 +224,32 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         _ctrlPlInteraction.HasHit(hitter, target);
     }
     
+    public void OnStartButtonClicked()
+    {
+        numberOfRounds = _playersList.Count - 1;
+        if (numberOfRounds < 1) // Todo: should be 1 not 0
+        {
+            NotifyAll("more players are needed");
+            playerInputManager.EnableJoining();
+            return;
+        }
+        
+        foreach (var player in _playersList)
+        {
+            DontDestroyOnLoad(player);
+        }
+        
+        playerInputManager.DisableJoining();
+
+        // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        // if (SceneManager.sceneCount > nextSceneIndex)
+        // {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // }
+        timer.StartTimerNumber(3); // for the loading timer which will call StartGameTimer()
+        // ChangePlayerRespawnPos();
+        // StartGameTimer();
+    }
 
     public void StartGameTimer()
     {
@@ -247,25 +257,19 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         loaderTimerObj.SetActive(false);
         startGameTimerObj.SetActive(true);
         timer.StartTimerNumber(1); // this starts the GameStartingTimer
-        numberOfRounds = _playersList.Count - 1;
-        playerInputManager.DisableJoining();
+        // numberOfRounds = _playersList.Count - 1;
         GiveRandomPos();
     }
     // StartGame() -> start the timer, unfreeze, call giveTagRandom()
     public void StartGame()
     {
-        ChangePlayerRespawnPos();
+        // ChangePlayerRespawnPos();
 
         Debug.Log("StartGame() is called");
-        // if (numberOfRounds < 1) // Todo: should be 1 not 0
-        // {
-        //     Debug.Log("There are no enough players!");
-        //     playerInputManager.EnableJoining();
-        //     return;
-        // }
         
         startGameTimerObj.SetActive(false);
         gameTimerObj.SetActive(true);
+        timer.StartTimerNumber(0); // this starts the GameTimer
         GiveRandomPos();
         StartRound();
     }
@@ -275,7 +279,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         Debug.Log("StartRound() is called");
         startRoundTimerObj.SetActive(false);
 
-        // if(roundNumber > numberOfRounds) return;
+        if(roundNumber > numberOfRounds) return;
         roundNumber++;
         GiveTagRandom();
         timer.ResetTimer(0);
@@ -334,5 +338,13 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     {
         winner = _playersList[0];
     }
-    // GivePointTo(Player): for the crown game to be called every .5 second and it gives 1 point to the crown owner 
+    // GivePointTo(Player): for the crown game to be called every .5 second and it gives 1 point to the crown owner
+
+    private void NotifyAll(String message)
+    {
+        foreach (var player in _playersList)
+        {
+            player.GetComponent<PlayerUI>().UpdateNotificationText(message);
+        }
+    }
 }

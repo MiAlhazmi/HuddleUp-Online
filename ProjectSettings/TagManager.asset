@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stick
   - Ground
+  - Visual
   layers:
   - Default
   - TransparentFX
