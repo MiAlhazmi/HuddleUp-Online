@@ -23,4 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StatsMenu/StatsMenu.unity
     guid: c348d2d920c219842a85f49f5dbd6b0c
+  - enabled: 1
+    path: Assets/Scenes/StatsMenu/Stats.unity
+    guid: 9316f5f6df931f2479ce9c5734852045
+  - enabled: 1
+    path: Assets/Scenes/MainMenu/UpdateUsername.unity
+    guid: cd5e077370460444aa2fb02d7f7d1232
   m_configObjects: {}

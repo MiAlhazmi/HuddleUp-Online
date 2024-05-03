@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 100866483}
   - component: {fileID: 100866482}
   - component: {fileID: 100866486}
+  - component: {fileID: 100866487}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -316,6 +317,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebacaf5b955bf5a4c8fb2843a8b3134d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &100866487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100866481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3593e749edf5ded439fdc827e0486367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &118377346
@@ -1250,8 +1263,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283891456
-  m_fontColor: {r: 0, g: 1, b: 0.33600044, a: 1}
+    rgba: 4294704896
+  m_fontColor: {r: 0, g: 1, b: 0.9836638, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1375,7 +1388,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 08b28104451ce904f9030e793d07c268, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 07e0e664aca2a204495ca562fcc1f34e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1459,8 +1472,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278216191
+  m_fontColor: {r: 1, g: 0.39789003, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2066,8 +2079,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283891456
-  m_fontColor: {r: 0, g: 1, b: 0.33600044, a: 1}
+    rgba: 4294704896
+  m_fontColor: {r: 0, g: 1, b: 0.9836638, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2350,8 +2363,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283891456
-  m_fontColor: {r: 0, g: 1, b: 0.33600044, a: 1}
+    rgba: 4294704896
+  m_fontColor: {r: 0, g: 1, b: 0.9836638, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2709,8 +2722,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283891456
-  m_fontColor: {r: 0, g: 1, b: 0.33600044, a: 1}
+    rgba: 4294704896
+  m_fontColor: {r: 0, g: 1, b: 0.9836638, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2939,6 +2952,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UsernamePrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 4080568840224202996, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4495274794050533260, guid: 4903c0951c2312d40adc53c256999580, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -755
@@ -3038,6 +3055,22 @@ PrefabInstance:
     - target: {fileID: 5651993027117067465, guid: 4903c0951c2312d40adc53c256999580, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 703
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700163292351906958, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 84.6447
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700163292351906958, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 86.0681
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700163292351906958, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 124
+      objectReference: {fileID: 0}
+    - target: {fileID: 7700163292351906958, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3150,7 +3183,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1795463806}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 100866487}
+        m_TargetAssemblyTypeName: TagBTN, Assembly-CSharp
+        m_MethodName: GoToStats
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1795463806
 MonoBehaviour:
   m_ObjectHideFlags: 0
