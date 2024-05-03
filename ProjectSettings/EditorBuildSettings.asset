@@ -18,6 +18,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Demo_Scene_Small_2.unity
     guid: 9a8a6ede55d3f4e43916754fba073b33
   - enabled: 1
-    path: Assets/Scenes/Register/Register.unity
-    guid: 6fb2f99291774804182a1f17ae209ca4
+    path: Assets/Scenes/StatsMenu/StatsMenu.unity
+    guid: c348d2d920c219842a85f49f5dbd6b0c
+  - enabled: 1
+    path: Assets/Scenes/StatsMenu/Stats.unity
+    guid: 9316f5f6df931f2479ce9c5734852045
+  - enabled: 1
+    path: Assets/Scenes/MainMenu/UpdateUsername.unity
+    guid: cd5e077370460444aa2fb02d7f7d1232
   m_configObjects: {}

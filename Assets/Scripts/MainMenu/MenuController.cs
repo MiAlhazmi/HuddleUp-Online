@@ -83,15 +83,16 @@ public class NewBehaviourScript : MonoBehaviour
 
     public void ViewStatsYes()
     {
-        if (PlayerPrefs.HasKey("Stats"))
-        {
-            StatsLoad = PlayerPrefs.GetString("Stats");
-            SceneManager.LoadScene(StatsLoad);
-        }
-        else
-        {
-            noStatsDialog.SetActive(true);
-        }
+         SceneManager.LoadScene("StatsMenu");
+        // if (PlayerPrefs.HasKey("Stats"))
+        // {
+        //     StatsLoad = PlayerPrefs.GetString("Stats");
+        //     SceneManager.LoadScene("StatsMenu");
+        // }
+        // else
+        // {
+        //     noStatsDialog.SetActive(true);
+        // }
     }
 
     public void ExitButton()
