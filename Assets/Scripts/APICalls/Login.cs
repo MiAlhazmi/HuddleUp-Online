@@ -114,7 +114,7 @@ namespace APICalls
                     string dataFromFile = File.ReadAllText(filePath);
                     UserSaveData savedData = JsonUtility.FromJson<UserSaveData>(dataFromFile);
                     currentUser = savedData.userInfo;
-
+        
                     if (savedData.isLoggedIn)
                     {
                         // Skip login if flag is true (handle transition to next scene)
