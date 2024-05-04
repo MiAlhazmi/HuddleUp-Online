@@ -1804,7 +1804,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 282272927}
   m_OnClick:
     m_PersistentCalls:
@@ -7965,7 +7965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4667138020987119032, guid: 4903c0951c2312d40adc53c256999580, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 183.00772
+      value: 276
       objectReference: {fileID: 0}
     - target: {fileID: 4667138020987119032, guid: 4903c0951c2312d40adc53c256999580, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -12385,8 +12385,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 269.8, y: 91.9}
-  m_SizeDelta: {x: 320.4723, y: 114.84}
+  m_AnchoredPosition: {x: 269, y: 98.81969}
+  m_SizeDelta: {x: 240.53, y: 101.0006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806535786
 MonoBehaviour:
