@@ -7,10 +7,10 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _controller;
     // private Animator _animator;
-    private bool isWalking;
-    private bool isSprinting;
-    private bool isCrouching;
-    private bool isJumping;
+    private bool _isWalking;
+    // private bool isSprinting;        no need for this because I'm keeping track of it anyways (_sprinting)
+    // private bool isCrouching;        no need for this because I'm keeping track of it anyways (_crouching)
+    // private bool isJumping;
     
     private Vector3 _playerVelocity = Vector3.zero;
     private bool _isGrounded;
@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
     public void ProcessMove(Vector2 input)
     {
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
-        isWalking = moveDir != Vector3.zero; // for animation: to check if the character is walkingwaw
+        _isWalking = moveDir != Vector3.zero; // for animation: to check if the character is walkingwaw
         _controller.Move(transform.TransformDirection(moveDir) * Time.deltaTime * _speed);
         _playerVelocity.y += Gravity * Time.deltaTime;
         if (_isGrounded && _playerVelocity.y < 0)
@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         // _crouching = true
         // // flase
         // false = true
-        if (_crouching = !_crouching)   // to check if crouching and then flip the value of _crouching
+        if (_crouching = !_crouching)   // to flip the value of _crouching and then check if crouching 
             _speed = _crouchSpeed;
         else 
             _speed = _walkSpeed;
@@ -117,10 +117,15 @@ public class PlayerMovement : MonoBehaviour
     
     public bool GetIsWalking()
     {
-        return isWalking;
+        return _isWalking;
     }
     public bool GetIsSprinting()
     {
-        return isSprinting;
+        return _sprinting;
+    }
+
+    public bool GetIsCrouching()
+    {
+        return _crouching;
     }
 }

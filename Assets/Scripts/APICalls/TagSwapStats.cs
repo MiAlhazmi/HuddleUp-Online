@@ -15,15 +15,48 @@ namespace APICalls
         public TMP_Text GamesPlayed;
         public TMP_Text Wins;
         public TMP_Text Loses;
-        public TMP_Text ErrorText;
+        //public TMP_Text ErrorText;
+        
+        public string username;
 
 
-        public string userName = "Shobhit";
+        private const string saveFileName = "userData.json";
+
+        public string Username
+        {
+            get => username;
+            set => username = value;
+        }
+
+        private UserInfo currentUser; // Stores the received userInfo object (optional) of type UserInfo
+
+        public UserInfo CurrentUser
+        {
+            get { return currentUser; }
+            set { currentUser = value; }
+        }
 
 
         public void OnTagSwapButtonClick()
         {
-            string username = userName;
+            string filePath = Path.Combine(Application.persistentDataPath, saveFileName);
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    string dataFromFile = File.ReadAllText(filePath);
+                    UserSaveData savedData = JsonUtility.FromJson<UserSaveData>(dataFromFile);
+                    currentUser = savedData.userInfo;
+                    
+                    username = currentUser.Username;
+                    
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError("Error loading user data: " + e.Message);
+                    // Handle potential loading errors (e.g., delete corrupted data or prompt user to re-login)
+                }
+            }
             StartCoroutine(TagSwapRequest(username));
         }
 
@@ -54,8 +87,8 @@ namespace APICalls
                 // Assuming JSON response with a Result object (check backend implementation)
                 Result<TagSwapResponse> tagSwapResult = JsonUtility.FromJson<Result<TagSwapResponse>>(response);
                 TagSwapResponse tagSwap = tagSwapResult.Data;
-
-                if (tagSwapResult.success && tagSwapResult.Data is not null)
+                
+                if (tagSwapResult.success)
                 {
                     GamesPlayed.text = tagSwap.gamesPlayed.ToString();
                     GamesPlayed.color = Color.green;
@@ -65,14 +98,11 @@ namespace APICalls
 
                     Loses.text = tagSwap.loses.ToString();
                     Loses.color = Color.green;
-
-                    // Handle successful login (e.g., transition to another scene)
-                    SceneManager.LoadScene("MainMenu_Scene");
                 }
                 else
                 {
-                    ErrorText.text = tagSwapResult.message;
-                    ErrorText.color = Color.red;
+                    // ErrorText.text = tagSwapResult.message;
+                    // ErrorText.color = Color.red;
                 }
             }
         }

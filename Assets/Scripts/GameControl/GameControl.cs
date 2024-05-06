@@ -15,22 +15,27 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     public static GameControl Instance;
     
     private CtrlPlInteraction _ctrlPlInteraction;
+    private MapSelectionControl _mapSelectionCtrl;
+    
+    [Header("Players")]
+    [SerializeField] private List<GameObject> _playersList;
+    [SerializeField] private List<GameObject> _survivorPlayersList;
+    [SerializeField] private List<GameObject> _deadPlayersList;
+    [SerializeField] private GameObject currentTagOwner;
+    [SerializeField] private GameObject winner;
 
     private TimerControl timer;
+    [Header("Timers")]
     [SerializeField] private GameObject startGameTimerObj;
     [SerializeField] private GameObject gameTimerObj;
     [SerializeField] private GameObject startRoundTimerObj;
     [SerializeField] private GameObject loaderTimerObj;
     [SerializeField] private GameObject pauseMenuObj;
     private PauseMenu pauseMenu;
-
     
-    private List<GameObject> _playersList;
-
-    [SerializeField] private GameObject currentTagOwner;
-    private GameObject winner;
     // Scoreboard
 
+    [SerializeField] private int _numGamesPlayed;
     [SerializeField] private int numberOfRounds;     // determine how many rounds depends on how many player there are
     [SerializeField] private int roundNumber = 0;
     
@@ -57,24 +62,51 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         DontDestroyOnLoad(gameObject);
         
         _ctrlPlInteraction = GetComponent<CtrlPlInteraction>();
+        _mapSelectionCtrl = GetComponent<MapSelectionControl>();
+        
         timer = GetComponent<TimerControl>();
+        pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
+        
         _playersList = new List<GameObject>();
+        _survivorPlayersList = new List<GameObject>();
+        _deadPlayersList = new List<GameObject>();
         playerInputManager = GetComponent<PlayerInputManager>();
 
-        pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
-        ChangePlayerRespawnPos();
+        ChangePlayersRespawnPos(); 
     }
     
     private void OnEnable()
     {
         playerInputManager.onPlayerJoined += PlayerInputManagerOnPlayerJoined;
+        SceneManager.activeSceneChanged += OnSceneChanged;
     }
     private void OnDisable()
     {
         if (playerInputManager != null)
             playerInputManager.onPlayerJoined -= PlayerInputManagerOnPlayerJoined;
+        SceneManager.activeSceneChanged -= OnSceneChanged;
     }
 
+    private void PlayerInputManagerOnPlayerJoined(PlayerInput playerInput)
+    {
+        AddPlayer(playerInput.GameObject());
+        playerInput.GameObject().name = $"Player{_playersList.Count}";
+        Debug.Log("From GameControl OnPlayerJoin(): " + playerInput.GameObject().name + " Joined the lobby");
+        GiveRandomPosTo(playerInput.GameObject());
+    }
+
+    private void OnSceneChanged(Scene current, Scene next)
+    {
+        ChangePlayersRespawnPos();
+        // if scene is lobby: reset all player (recover all dead, empty dead list, empty survivor list) 
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("PlaygroundScene"))
+        {
+            if (_numGamesPlayed != 0)
+            {
+                ResetAllPlayers();
+            }
+        }
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -90,41 +122,41 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         }
     }
 
-    public void OnStartButtonClicked()
+
+    public void ResetAllPlayers()
     {
+        // (recover all dead, empty dead list, empty survivor list) 
         foreach (var player in _playersList)
         {
-            DontDestroyOnLoad(player);
+            // player.SetActive(); nope, not anymore!
+            // activate visuals only
+            player.GetComponent<Player>().ActivatePlayer();
         }
 
-        // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        // if (SceneManager.sceneCount > nextSceneIndex)
-        // {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        // }
-        timer.StartTimerNumber(3); // for the loading timer
-        // ChangePlayerRespawnPos();
-        // StartGameTimer();
+        _survivorPlayersList.Clear();
+        _deadPlayersList.Clear();
+        GiveRandomPos();
     }
-
-    private void ChangePlayerRespawnPos()
+    private void ChangePlayersRespawnPos()
     {
-        Debug.Log("Looking for a respawn land... ");
         respawnLand = null;
         respawnLand = GameObject.FindGameObjectWithTag("Respawn");
     }
-    private void PlayerInputManagerOnPlayerJoined(PlayerInput playerInput)
-    {
-        AddPlayer(playerInput.GameObject());
-        playerInput.GameObject().name = $"Player{_playersList.Count}";
-        Debug.Log("From GameControl OnPlayerJoin(): " + playerInput.GameObject().name + " Joined the lobby");
-        GiveRandomPosTo(playerInput.GameObject());
-    }
-
 
     private void AddPlayer(GameObject player)
     {
         _playersList.Add(player);
+    }
+
+    /*
+     * This function is to be called when the game starts
+     */
+    private void AddPlayersToSurvivors()
+    {
+        foreach (var player in _playersList)
+        {
+            _survivorPlayersList.Add(player);
+        }  
     }
     
     // public void AddPlayer()
@@ -164,25 +196,30 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     // KickPlayer()
     // FillBots
 
+    private void UpdateRespawnPos()
+    {
+        if (respawnLand == null) return;
+    
+        Transform respawnTransform = respawnLand.transform;
+        Vector3 respawnPos = respawnTransform.position;
+        Vector3 respawnScale = respawnTransform.localScale;
+
+        minValueX = respawnPos.x - respawnScale.x / 2f;
+        maxValueX = respawnPos.x + respawnScale.x / 2f;
+        minValueZ = respawnPos.z - respawnScale.z / 2f;
+        maxValueZ = respawnPos.z + respawnScale.z / 2f;
+        minValueY = respawnPos.y + 5f;
+    
+    }
+
     private void GiveRandomPos()
     {
         Debug.Log("player list count: " + _playersList.Count);
         if (_playersList.Count <= 0) return;
 
-        if (respawnLand != null)
-        {
-            Transform respawnTransform = respawnLand.transform;
-            Vector3 respawnPos = respawnTransform.position;
-            Vector3 respawnScale = respawnTransform.localScale;
-
-            minValueX = respawnPos.x - respawnScale.x / 2f;
-            maxValueX = respawnPos.x + respawnScale.x / 2f;
-            minValueZ = respawnPos.z - respawnScale.z / 2f;
-            maxValueZ = respawnPos.z + respawnScale.z / 2f;
-            minValueY = respawnPos.y + 10f;
-        }
+        UpdateRespawnPos();
         
-        foreach (var player in _playersList)
+        foreach (var player in _playersList) 
         {
             player.GetComponent<CharacterController>().enabled = false;     // because CharacterController component won't allow to change the position 
             float xPos = Random.Range(minValueX, maxValueX);
@@ -195,7 +232,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     
     private void GiveRandomPosTo(GameObject player)
     {
-        Debug.Log("player list count: " + _playersList.Count);
+        UpdateRespawnPos();
+        
         if (_playersList.Count <= 0) return;
         
         player.GetComponent<CharacterController>().enabled = false;     // because CharacterController component won't allow to change the position 
@@ -210,62 +248,90 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     private void GiveTagRandom()
     {
         if (currentTagOwner != null) return;
-        if (_playersList.Count <= 0) return;
+        if (_survivorPlayersList.Count <= 0) return;
         
-        int randomNumber = Random.Range(0, _playersList.Count);
-        _playersList[randomNumber].GetComponent<Player>().SetIsTagger(true);
-        SetTagOwner(_playersList[randomNumber]);
+        int randomNumber = Random.Range(0, _survivorPlayersList.Count);
+        _survivorPlayersList[randomNumber].GetComponent<Player>().SetIsTagger(true);
+        SetTagOwner(_survivorPlayersList[randomNumber]);
         Debug.Log("Tag was given randomly!");
     }
     
-
     private void DestroyTagger()
     {
-        if (currentTagOwner == null) return;
+        if (currentTagOwner == null) {Debug.LogError("There's no tag owner");return;}
         
-        _playersList.Remove(currentTagOwner);
-        ShowPlayerList();
-        currentTagOwner.SetActive(false);
+        _deadPlayersList.Add(currentTagOwner);
+        _survivorPlayersList.Remove(currentTagOwner);
+        // ShowPlayerList();
+        // currentTagOwner.SetActive(false);   // instead we could deactivate the visuals and change the camera to float camera  -->  Done
+        currentTagOwner.GetComponent<Player>().DeActivatePlayer();
+        LockOnSky(currentTagOwner);
         currentTagOwner = null;
+    }
+
+    private void LockOnSky(GameObject player)
+    {
+        // Considering CharacterController is disabled
+        float xPos = Random.Range(minValueX, maxValueX);
+        float zPos = Random.Range(minValueZ, maxValueZ);
+        Vector3 pos = new Vector3(xPos, minValueY + 10f, zPos);
+        player.transform.position = pos;
     }
 
     private void AnnounceWinner()
     {
         if (!winner.IsUnityNull()) winnerPlayerName.text = winner.name;
-        timer.StartTimerNumber(4); // maybe I don;t need to turn it on
-        
+        timer.StartTimerNumber(4); // this is WinnerAnnouncementTimer // maybe I  don;t need to turn it on
     }
     public void HasHit(GameObject hitter, GameObject target)
     {
         _ctrlPlInteraction.HasHit(hitter, target);
     }
     
+    public void OnStartButtonClicked()
+    {
+        numberOfRounds = _playersList.Count - 1;
+        if (numberOfRounds < 1) // Todo: should be 1 not 0
+        {
+            NotifyAll("more players are needed");
+            // playerInputManager.EnableJoining();
+            return;
+        }
+        AddPlayersToSurvivors();
+        foreach (var player in _playersList)
+        {
+            DontDestroyOnLoad(player);
+        }
+        
+        // playerInputManager.DisableJoining();
+
+        // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        // if (SceneManager.sceneCount > nextSceneIndex)
+        // {
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(_mapSelectionCtrl.selectedMap);
+        // }
+        timer.StartTimerNumber(3); // for the loading timer which will call StartGameTimer()
+    }
 
     public void StartGameTimer()
     {
-        ChangePlayerRespawnPos();
+        ChangePlayersRespawnPos();
         loaderTimerObj.SetActive(false);
         startGameTimerObj.SetActive(true);
         timer.StartTimerNumber(1); // this starts the GameStartingTimer
-        numberOfRounds = _playersList.Count - 1;
-        playerInputManager.DisableJoining();
         GiveRandomPos();
     }
     // StartGame() -> start the timer, unfreeze, call giveTagRandom()
     public void StartGame()
     {
-        ChangePlayerRespawnPos();
+        // ChangePlayerRespawnPos();
 
         Debug.Log("StartGame() is called");
-        // if (numberOfRounds < 1) // Todo: should be 1 not 0
-        // {
-        //     Debug.Log("There are no enough players!");
-        //     playerInputManager.EnableJoining();
-        //     return;
-        // }
         
         startGameTimerObj.SetActive(false);
         gameTimerObj.SetActive(true);
+        timer.StartTimerNumber(0); // this starts the GameTimer
         GiveRandomPos();
         StartRound();
     }
@@ -275,7 +341,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         Debug.Log("StartRound() is called");
         startRoundTimerObj.SetActive(false);
 
-        // if(roundNumber > numberOfRounds) return;
+        if(roundNumber > numberOfRounds) return;
         roundNumber++;
         GiveTagRandom();
         timer.ResetTimer(0);
@@ -295,7 +361,6 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         {
             startRoundTimerObj.SetActive(true);
             timer.StartTimerNumber(2);
-            // StartRound();
         }
     }
     public void EndGame()
@@ -303,20 +368,46 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         SetWinner();
         AnnounceWinner();
         canvasGameEnd.SetActive(true);
+        _numGamesPlayed++;
         // Time.timeScale = 0;
     }
 
+    // to be called from the WinnerAnnouncementTimer
     public void QuitGame()
     {
-        var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (SceneManager.sceneCount > nextSceneIndex)
+        canvasGameEnd.SetActive(false);
+        timer.ResetAllTimers();
+        QuitGame(false);    // not to main menu
+    }
+    
+    public void QuitGame(bool toMenu)
+    {
+        // toMenu = true; // TODO: temporary
+        // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        // if (SceneManager.sceneCount > nextSceneIndex)
+        // {
+        //     SceneManager.LoadScene(nextSceneIndex);
+        // }
+        if (toMenu)
         {
-            SceneManager.LoadScene(nextSceneIndex);
+            // Destroy(gamecontrol); & players
+            DestroyAllObjects();
+            SceneManager.LoadScene("MainMenu_Scene");
+            Destroy(gameObject);
         }
         else
         {
-            // Destroy(gamecontrol); & players
-            SceneManager.LoadScene("MainMenu_Scene");
+            // TODO: safe stats!! 
+            SceneManager.LoadScene("PlaygroundScene");
+        }
+    }
+
+    private void DestroyAllObjects()
+    {
+        Debug.Log("All objects Destroyed");
+        foreach (var player in _playersList)
+        {
+            Destroy(player);
         }
     }
     
@@ -332,7 +423,15 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
 
     private void SetWinner()
     {
-        winner = _playersList[0];
+        winner = _survivorPlayersList[0];
     }
-    // GivePointTo(Player): for the crown game to be called every .5 second and it gives 1 point to the crown owner 
+    // GivePointTo(Player): for the crown game to be called every .5 second and it gives 1 point to the crown owner
+
+    private void NotifyAll(String message)
+    {
+        foreach (var player in _playersList)
+        {
+            player.GetComponent<PlayerUI>().UpdateNotificationText(message);
+        }
+    }
 }

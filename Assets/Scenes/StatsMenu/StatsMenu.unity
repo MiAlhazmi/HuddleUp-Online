@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2308,6 +2308,7 @@ GameObject:
   - component: {fileID: 1236156080}
   - component: {fileID: 1236156082}
   - component: {fileID: 1236156081}
+  - component: {fileID: 1236156083}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2431,6 +2432,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1236156079}
   m_CullTransparentMesh: 1
+--- !u!114 &1236156083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236156079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbbdf9456b4243b9834e8764cb58bdd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GamesPlayed: {fileID: 0}
+  Wins: {fileID: 0}
+  Loses: {fileID: 0}
+  username: 
 --- !u!1 &1287911875
 GameObject:
   m_ObjectHideFlags: 0
@@ -3052,9 +3069,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5557601987461809210, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5651993027117067465, guid: 4903c0951c2312d40adc53c256999580, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 703
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335783551409810875, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7700163292351906958, guid: 4903c0951c2312d40adc53c256999580, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3073,10 +3098,56 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2605011226858134626, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+    - {fileID: 4106704482783148425, guid: 4903c0951c2312d40adc53c256999580, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8471700036205500618, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1788175252}
   m_SourcePrefab: {fileID: 100100000, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+--- !u!114 &1788175249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5557601987461809210, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+  m_PrefabInstance: {fileID: 1788175248}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1788175250 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6335783551409810875, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+  m_PrefabInstance: {fileID: 1788175248}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1788175251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8471700036205500618, guid: 4903c0951c2312d40adc53c256999580, type: 3}
+  m_PrefabInstance: {fileID: 1788175248}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1788175252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788175251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86109ec084484362b416c7ea461c2c32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  username: {fileID: 1788175250}
+  xp: {fileID: 1788175249}
 --- !u!1 &1795463802
 GameObject:
   m_ObjectHideFlags: 0
