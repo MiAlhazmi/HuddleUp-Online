@@ -24,6 +24,23 @@ public class Player : MonoBehaviour
         ChangeColor(_playerColor);
     }
 
+    public void DeActivatePlayer()
+    {
+        _visual.SetActive(false);
+        gameObject.GetComponent<PlayerHit>().enabled = false;
+        gameObject.GetComponent<PlayerMovement>().enabled = false;
+        gameObject.GetComponent<CharacterController>().enabled = false;
+    }
+    
+    public void ActivatePlayer()
+    {
+        _visual.SetActive(true);
+        gameObject.GetComponent<PlayerHit>().enabled = true;
+        gameObject.GetComponent<PlayerMovement>().enabled = true;
+        gameObject.GetComponent<CharacterController>().enabled = true;
+        SetIsTagger(false);
+    }
+    
     public void SetIsTagger(bool paraIsTagger)
     {
         isTagger = paraIsTagger;

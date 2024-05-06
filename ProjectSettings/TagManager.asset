@@ -7,6 +7,7 @@ TagManager:
   - Stick
   - Ground
   - Visual
+  - GameControl
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Ground
   - Interactable
   - Player
-  - 
-  - 
+  - Post Processing
+  - PlayerVisual
   - 
   - 
   - 
