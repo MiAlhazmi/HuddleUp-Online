@@ -12,6 +12,7 @@ public class MyPlayerInputManager : MonoBehaviour
     private PlayerMovement movement;
     private PlayerLook look;
     private PlayerHit hit;
+    private PlayerInteract playerInteract;
 
     [SerializeField] private Vector2 inputVector = Vector2.zero;
     [SerializeField] private Vector2 inputLook = Vector2.zero;
@@ -24,6 +25,7 @@ public class MyPlayerInputManager : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
         look = GetComponent<PlayerLook>();
         hit = GetComponent<PlayerHit>();
+        playerInteract = GetComponent<PlayerInteract>();
     }
     
     public void OnMove(InputAction.CallbackContext context)
@@ -62,6 +64,12 @@ public class MyPlayerInputManager : MonoBehaviour
     {
         if (context.performed)
             movement.Sprint();
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            playerInteract.Interact();
     }
     
 

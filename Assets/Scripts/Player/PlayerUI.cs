@@ -54,7 +54,7 @@ public class PlayerUI : MonoBehaviour
             if (_notifyDurationTimer > _notifyDuration)
             {
                 // A hacky way to animate the text
-                if (_notifyDurationTimer < _notifyDuration + _notifyFadeSpeed)
+                if (_notifyDurationTimer < _notifyDuration + _notifyFadeSpeed && _notifyText.text.Length > 0)
                 {
                     _notifyText.text = _notifyText.text.Remove(_notifyText.text.Length - 1);
                 }

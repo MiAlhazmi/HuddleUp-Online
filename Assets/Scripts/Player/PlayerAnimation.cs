@@ -29,7 +29,6 @@ public class PlayerAnimation : MonoBehaviour
     {
         // _animator = GetComponent<Animator>();
         _animator = GetComponentInChildren<Animator>();
-        if(_animator != null) Debug.Log("animator found");
         _playerMovement = GetComponent<PlayerMovement>();
         _playerHit = GetComponent<PlayerHit>();
     }
