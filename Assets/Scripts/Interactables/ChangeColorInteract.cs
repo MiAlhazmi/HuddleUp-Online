@@ -8,6 +8,7 @@ public class ChangeColorInteract : Interactable
     // [SerializeField] private Color color;
     [SerializeField] private MeshRenderer _meshRenderer;
     private Color _thisColor;
+    [SerializeField] private String colorName;
     private bool _locked;
     private GameObject _colorOwner; // this points to the player who took the color
     
@@ -17,6 +18,7 @@ public class ChangeColorInteract : Interactable
         _meshRenderer = GetComponent<MeshRenderer>();
         _thisColor = _meshRenderer.material.color;
         _locked = false;
+        promptMessage = "Pick " + colorName;
     }
 
     protected override void Interact(GameObject playerGameObj)
@@ -26,6 +28,19 @@ public class ChangeColorInteract : Interactable
             playerGameObj.GetComponent<Player>().ChangePlayerColor(_meshRenderer.material.color);
             _colorOwner = playerGameObj;
             _locked = true;
+            playerGameObj.GetComponent<PlayerUI>().UpdateNotificationText("You're now " + colorName);
+        } else if (IsOwner(playerGameObj))
+        {
+            playerGameObj.GetComponent<PlayerUI>().UpdateNotificationText("You're " + colorName);
         }
+        else
+        {
+            playerGameObj.GetComponent<PlayerUI>().UpdateNotificationText(colorName + " is taken");
+        }
+    }
+
+    private bool IsOwner(GameObject playerGameObj)
+    {
+        return _colorOwner == playerGameObj;
     }
 }
