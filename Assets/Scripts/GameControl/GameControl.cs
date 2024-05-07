@@ -30,6 +30,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     [SerializeField] private GameObject gameTimerObj;
     [SerializeField] private GameObject startRoundTimerObj;
     [SerializeField] private GameObject loaderTimerObj;
+    
     [SerializeField] private GameObject pauseMenuObj;
     private PauseMenu pauseMenu;
     
@@ -40,6 +41,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     [SerializeField] private int roundNumber = 0;
     
     // Todo: Will change this with a plane for respawns
+    [Header("Respawn config")]
     [SerializeField] private float minValueX;
     [SerializeField] private float minValueZ;
     [SerializeField] private float maxValueX;
@@ -99,12 +101,20 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     {
         ChangePlayersRespawnPos();
         // if scene is lobby: reset all player (recover all dead, empty dead list, empty survivor list) 
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("PlaygroundScene"))
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("PlaygroundScene") && _numGamesPlayed != 0) // <- instead we can check current var, if !MainMenu and then we increment numGames... here 
         {
-            if (_numGamesPlayed != 0)
-            {
-                ResetAllPlayers();
-            }
+            ResetAllPlayers();
+            currentTagOwner = null;
+            winner = null;
+            winnerPlayerName.text = "";
+            timer.ResetAllTimers();
+            startGameTimerObj.SetActive(false);
+            gameTimerObj.SetActive(false);
+            startRoundTimerObj.SetActive(false);
+            loaderTimerObj.SetActive(false);
+            canvasGameEnd.SetActive(false);
+            numberOfRounds = 0;
+            roundNumber = 0;
         }
     }
     private void Update()
@@ -123,7 +133,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     }
 
 
-    public void ResetAllPlayers()
+    private void ResetAllPlayers()
     {
         // (recover all dead, empty dead list, empty survivor list) 
         foreach (var player in _playersList)
@@ -264,7 +274,9 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         _survivorPlayersList.Remove(currentTagOwner);
         // ShowPlayerList();
         // currentTagOwner.SetActive(false);   // instead we could deactivate the visuals and change the camera to float camera  -->  Done
-        currentTagOwner.GetComponent<Player>().DeActivatePlayer();
+        Player taggerPlayerComponent = currentTagOwner.GetComponent<Player>();
+        taggerPlayerComponent.DeActivatePlayer();
+        taggerPlayerComponent.SetIsTagger(false);
         LockOnSky(currentTagOwner);
         currentTagOwner = null;
     }
@@ -291,7 +303,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     public void OnStartButtonClicked()
     {
         numberOfRounds = _playersList.Count - 1;
-        if (numberOfRounds < 1) // Todo: should be 1 not 0
+        if (numberOfRounds < 1)
         {
             NotifyAll("more players are needed");
             // playerInputManager.EnableJoining();
@@ -312,6 +324,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         SceneManager.LoadScene(_mapSelectionCtrl.selectedMap);
         // }
         timer.StartTimerNumber(3); // for the loading timer which will call StartGameTimer()
+        loaderTimerObj.SetActive(true);
     }
 
     public void StartGameTimer()

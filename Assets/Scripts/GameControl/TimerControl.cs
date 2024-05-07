@@ -55,9 +55,14 @@ public class TimerControl : MonoBehaviour
     
     public void ResetAllTimers()
     {
-        foreach (var aTimer in circularTimers)
+        // foreach (var aTimer in circularTimers)
+        // {
+        //     aTimer.ResetTimer();
+        // }
+
+        for (int i = 0; i < circularTimers.Length; i++)
         {
-            aTimer.ResetTimer();
+            ResetTimer(i);
         }
     }
 

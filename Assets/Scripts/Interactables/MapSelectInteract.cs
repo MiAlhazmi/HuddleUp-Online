@@ -10,6 +10,7 @@ public class MapSelectInteract : Interactable
 
     private void Awake()
     {
+        _mapSelectionControl = GameObject.FindGameObjectWithTag("GameControl").GetComponent<MapSelectionControl>();
         _objectSelect = GetComponent<ObjectSelect>();
     }
 

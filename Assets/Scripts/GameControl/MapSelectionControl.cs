@@ -8,8 +8,10 @@ public class MapSelectionControl : MonoBehaviour
 {
     public enum Maps
     {
-        Map1,
-        Map2
+        Lab,
+        Camp,
+        Village,
+        Playground
     };
 
     public String selectedMap;
@@ -23,10 +25,10 @@ public class MapSelectionControl : MonoBehaviour
     {
         switch (map)
         {
-            case Maps.Map1:
+            case Maps.Lab:
                 selectedMap = "Map1";
                 break;
-            case Maps.Map2:
+            case Maps.Camp:
                 selectedMap = "Map2";
                 break;
         }
