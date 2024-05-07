@@ -62,15 +62,20 @@ public class ObjectsSelection : MonoBehaviour
     
     public void SelectObject(GameObject objectSelectObject)
     {
-        Debug.Log("SelectObject(); found: " + _objects.Contains(objectSelectObject));
-        if (_objects[0].GetInstanceID() == objectSelectObject.GetInstanceID())
+        // Debug.Log("SelectObject(); found: " + _objects.Contains(objectSelectObject));
+        // if (_objects[0].GetInstanceID() == objectSelectObject.GetInstanceID())
+        // {
+        //     Debug.Log("ObjectSelect found!");
+        //     _selectedObjectIndex = 0;
+        // } else if (_objects[1].GetInstanceID() == objectSelectObject.GetInstanceID())
+        // {
+        //     Debug.Log("ObjectSelect found!");
+        //     _selectedObjectIndex = 1;
+        // }
+
+        for (var i = 0; i < _objects.Count; i++)
         {
-            Debug.Log("ObjectSelect found!");
-            _selectedObjectIndex = 0;
-        } else if (_objects[1].GetInstanceID() == objectSelectObject.GetInstanceID())
-        {
-            Debug.Log("ObjectSelect found!");
-            _selectedObjectIndex = 1;
+            _selectedObjectIndex = _objects[i].GetInstanceID() == objectSelectObject.GetInstanceID()? i : _selectedObjectIndex;
         }
         
         DoEffect();

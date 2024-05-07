@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 public class CtrlPlInteraction : MonoBehaviour
 {
     private GameControl _gameCtrl;
+    private SoundEffectsControl _soundEffectCtrl;
     public float pushDistance = 2f; // Distance the hit player will be pushed back
     public float pushUpDistance = 3;
     public float pushDuration = 0.5f; // Time over which to push the player
@@ -16,6 +18,7 @@ public class CtrlPlInteraction : MonoBehaviour
     private void Awake()
     {
         _gameCtrl = GetComponent<GameControl>();
+        _soundEffectCtrl = GetComponent<SoundEffectsControl>();
     }
 
     public void HasHit(GameObject player, GameObject target)
@@ -30,6 +33,7 @@ public class CtrlPlInteraction : MonoBehaviour
 
     private bool IsTagger(GameObject player)
     {
+        if (_gameCtrl.GetTagOwner().IsUnityNull()) return false;
         return player.GetInstanceID() == _gameCtrl.GetTagOwner().GetInstanceID();
         // or player.GetComponent<Player>.GetIsTagger()
     }
@@ -97,6 +101,7 @@ public class CtrlPlInteraction : MonoBehaviour
 
     private void TransferTag(GameObject fromPlayer, GameObject toTarget)
     {
+        _soundEffectCtrl.PlayTagTransfer();   // play TagTransfer sound
         fromPlayer.GetComponent<Player>().SetIsTagger(false);
         toTarget.GetComponent<Player>().SetIsTagger(true);
         _gameCtrl.SetTagOwner(toTarget);

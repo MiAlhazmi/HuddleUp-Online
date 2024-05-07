@@ -11,6 +11,7 @@ public class PlayerHit : MonoBehaviour
     [SerializeField] private LayerMask _playerLayerMask;
     private PlayerAnimation _animation;
     private PlayerUI _playerUI;
+    private SoundEffectPlayer _sEPlayer;
     
     [SerializeField] private float _hitDistance = 4f;
     private float _hitDelay = 1f; // One second
@@ -24,6 +25,7 @@ public class PlayerHit : MonoBehaviour
         _gameControl = FindObjectOfType<GameControl>().GetComponent<GameControl>();
         _animation = GetComponent<PlayerAnimation>();
         _playerUI = GetComponent<PlayerUI>();
+        _sEPlayer = GetComponent<SoundEffectPlayer>();
         // playerClass = GetComponent<Player>();
     }
 
@@ -61,6 +63,8 @@ public class PlayerHit : MonoBehaviour
     public void Hit()
     {
         if (!_hitAllowed) return;
+        
+        
         // I can make hit delay so it's matched with the animation -- maybe not :(
         _animation.IsHittingTrigger(); // for animation
         Transform camTransform = _cam.transform;        // TODO: I should take the cam Transform in the attribute instead of the whole object
@@ -83,6 +87,7 @@ public class PlayerHit : MonoBehaviour
         // _playerLayerMask this was deleted to make the ray consider other objects
         if (Physics.Raycast(ray, out RaycastHit hitTarget, _hitDistance, _playerLayerMask)) // || Physics.Raycast(ray2, out hitTarget, _hitDistance, _playerLayerMask) || Physics.Raycast(ray3, out hitTarget, _hitDistance, _playerLayerMask)
         {
+            _sEPlayer.PlayHitMarker();
             // if (hitTarget.collider.gameObject.layer != _playerLayerMask)
             // {
             //     Debug.Log("Ray has hit another object!");
@@ -93,18 +98,24 @@ public class PlayerHit : MonoBehaviour
         }
         else if (Physics.Raycast(ray2, out RaycastHit hitTarget2, _hitDistance, _playerLayerMask))
         {
+            _sEPlayer.PlayHitMarker();
             Debug.Log("A player was Hit!");
             _gameControl.HasHit(gameObject, hitTarget2.collider.gameObject);
         }
         
         else if (Physics.Raycast(ray3, out RaycastHit hitTarget3, _hitDistance, _playerLayerMask))
         {
+            _sEPlayer.PlayHitMarker();
             Debug.Log("A player was Hit!");
             _gameControl.HasHit(gameObject, hitTarget3.collider.gameObject);
         }
+        else
+        {
+            _sEPlayer.PlayPunch();
+        }
 
         _hitAllowed = false;
-        Invoke("AllowHit", _hitDelay);
+        Invoke(nameof(AllowHit), _hitDelay);
     }
 
     private void AllowHit()
