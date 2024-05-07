@@ -16,6 +16,10 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     
     private CtrlPlInteraction _ctrlPlInteraction;
     private MapSelectionControl _mapSelectionCtrl;
+    private SoundEffectsControl _soundEffectCtrl;
+    private MusicPlayerControl _musicPlayerControl;
+
+    [SerializeField] private Camera gameCamera;
     
     [Header("Players")]
     [SerializeField] private List<GameObject> _playersList;
@@ -65,6 +69,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         
         _ctrlPlInteraction = GetComponent<CtrlPlInteraction>();
         _mapSelectionCtrl = GetComponent<MapSelectionControl>();
+        _soundEffectCtrl = GetComponent<SoundEffectsControl>();
+        _musicPlayerControl = GetComponent<MusicPlayerControl>();
         
         timer = GetComponent<TimerControl>();
         pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
@@ -91,6 +97,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
 
     private void PlayerInputManagerOnPlayerJoined(PlayerInput playerInput)
     {
+        gameCamera.gameObject.SetActive(false);
         AddPlayer(playerInput.GameObject());
         playerInput.GameObject().name = $"Player{_playersList.Count}";
         Debug.Log("From GameControl OnPlayerJoin(): " + playerInput.GameObject().name + " Joined the lobby");
@@ -359,9 +366,13 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         GiveTagRandom();
         timer.ResetTimer(0);
         timer.StartTimerNumber(0); // this starts the game timer
+        _soundEffectCtrl.PlayRoundStart();
+        _musicPlayerControl.PlayMapMusic();
     }
     public void EndRound()
     {
+        _soundEffectCtrl.PlayRoundEnd();
+        _musicPlayerControl.StopMusic();
         Debug.Log("EndRound() is called");
         // Get rid of the tagger!! DestroyTagger(): unity particle system
         DestroyTagger();

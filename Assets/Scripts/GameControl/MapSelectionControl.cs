@@ -6,6 +6,9 @@ using Random = UnityEngine.Random;
 
 public class MapSelectionControl : MonoBehaviour
 {
+    
+    public String selectedMap;
+    
     public enum Maps
     {
         Lab,
@@ -14,7 +17,6 @@ public class MapSelectionControl : MonoBehaviour
         Playground
     };
 
-    public String selectedMap;
 
     private void Awake()
     {
@@ -39,13 +41,16 @@ public class MapSelectionControl : MonoBehaviour
         switch (mapNum)
         {
             case 1:
-                selectedMap = "Map1";
+                selectedMap = "Playground";
                 break;
             case 2:
-                selectedMap = "Map2";
+                selectedMap = "Camp";
+                break;
+            case 3:
+                selectedMap = "Village";
                 break;
             default: 
-                selectedMap = "Map1";
+                selectedMap = "Playground";
                 break;
         }
     }
