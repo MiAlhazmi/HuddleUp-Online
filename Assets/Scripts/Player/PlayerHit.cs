@@ -128,4 +128,9 @@ public class PlayerHit : MonoBehaviour
         // playerClass.ChangeColor(Color.red); Prefer to do this in the Player class cuz u might get hit from non tagger
         transform.position += hitDirection + Vector3.up / 4;
     }
+
+    public void SetHitDelay(float time)
+    {
+        _hitDelay = time;
+    }
 }

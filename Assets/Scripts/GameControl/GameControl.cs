@@ -18,11 +18,11 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     private MapSelectionControl _mapSelectionCtrl;
     private SoundEffectsControl _soundEffectCtrl;
     private MusicPlayerControl _musicPlayerControl;
-
+    
     [SerializeField] private Camera gameCamera;
     
     [Header("Players")]
-    [SerializeField] private List<GameObject> _playersList;
+    [SerializeField] public List<GameObject> _playersList;
     [SerializeField] private List<GameObject> _survivorPlayersList;
     [SerializeField] private List<GameObject> _deadPlayersList;
     [SerializeField] private GameObject currentTagOwner;
@@ -38,7 +38,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     [SerializeField] private GameObject pauseMenuObj;
     private PauseMenu pauseMenu;
     
-    // Scoreboard
+    // Scoreboard -> key : value;   playerObj or id : score
+    public Dictionary<int, int> scoreboard { get;} = new Dictionary<int, int>(); // ToDo: public get private set
 
     [SerializeField] private int _numGamesPlayed;
     [SerializeField] private int numberOfRounds;     // determine how many rounds depends on how many player there are
@@ -163,6 +164,8 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     private void AddPlayer(GameObject player)
     {
         _playersList.Add(player);
+        if (!scoreboard.ContainsKey(player.GetInstanceID()))  // new
+            scoreboard.Add(player.GetInstanceID(), 0);
     }
 
     /*
@@ -209,6 +212,13 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     // GiveTagTo(Player, fromPlayer)
     // CheckTagOwner()
     // GivePointsToSurvivors(): to be called after a tagger dies
+    private void GivePointsToSurvivors()
+    {
+        foreach (var player in _survivorPlayersList)
+        {
+            GiveScore(player.GetInstanceID(), 10 * roundNumber);
+        }
+    }
     // JoinPlayer()
     // KickPlayer()
     // FillBots
@@ -334,6 +344,14 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         loaderTimerObj.SetActive(true);
     }
 
+    private void GiveScore(int playerId, int score)
+    {
+        if (scoreboard.ContainsKey(playerId))
+            scoreboard[playerId] += score;
+        else
+            Debug.LogError("player id not found in scoreboard");
+    }
+    
     public void StartGameTimer()
     {
         ChangePlayersRespawnPos();
@@ -376,7 +394,7 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         Debug.Log("EndRound() is called");
         // Get rid of the tagger!! DestroyTagger(): unity particle system
         DestroyTagger();
-        // GivePointsToSurvivors
+        GivePointsToSurvivors();
         if (roundNumber >= numberOfRounds)
         {
             EndGame();
@@ -394,6 +412,11 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         canvasGameEnd.SetActive(true);
         _numGamesPlayed++;
         // Time.timeScale = 0;
+
+        for (int i = 0; i < _playersList.Count; i++)
+        {
+            Debug.Log("Player " + i + ": " + scoreboard[_playersList[i].GetInstanceID()]);
+        }
     }
 
     // to be called from the WinnerAnnouncementTimer
@@ -406,7 +429,6 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
     
     public void QuitGame(bool toMenu)
     {
-        // toMenu = true; // TODO: temporary
         // var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         // if (SceneManager.sceneCount > nextSceneIndex)
         // {
@@ -414,10 +436,10 @@ public class GameControl : MonoBehaviour, PlayerToGameControl
         // }
         if (toMenu)
         {
-            // Destroy(gamecontrol); & players
+            // Destroy GameControl & players
             DestroyAllObjects();
             SceneManager.LoadScene("MainMenu_Scene");
-            Destroy(gameObject);
+            Destroy(gameObject);    // destroy GameControl
         }
         else
         {

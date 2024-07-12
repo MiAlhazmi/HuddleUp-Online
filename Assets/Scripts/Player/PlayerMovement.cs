@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _walkSpeed = 5;
-    [SerializeField] private float _sprintSpeed = 8;
+    [SerializeField] private float _sprintSpeed = 8 ; 
     [SerializeField] private float _crouchSpeed = 3;
     private const float Gravity = -9.8f;
     [SerializeField] private float _jumpHeight = 1.5f;
@@ -100,6 +100,14 @@ public class PlayerMovement : MonoBehaviour
         else
             _speed = _walkSpeed;
     }
+
+    public void RefreshSprint()
+    {
+        if (_sprinting) 
+            _speed = _sprintSpeed;
+        else
+            _speed = _walkSpeed;
+    }
     
     public void Crouch()
     {
@@ -127,5 +135,10 @@ public class PlayerMovement : MonoBehaviour
     public bool GetIsCrouching()
     {
         return _crouching;
+    }
+
+    public void SetSprintSpeed(float paramSpeed)
+    {
+        _sprintSpeed = paramSpeed;
     }
 }

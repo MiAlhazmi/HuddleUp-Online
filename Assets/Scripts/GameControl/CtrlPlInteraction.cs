@@ -13,7 +13,7 @@ public class CtrlPlInteraction : MonoBehaviour
     public float pushDistance = 2f; // Distance the hit player will be pushed back
     public float pushUpDistance = 3;
     public float pushDuration = 0.5f; // Time over which to push the player
-    private float _pushforce = 10f;
+    // [SerializeField] private float _pushforce = 10f;
 
     private void Awake()
     {
@@ -51,7 +51,7 @@ public class CtrlPlInteraction : MonoBehaviour
         // StartCoroutine(SmoothPush(target.transform, newPosition));
 
         // Calculate push vector
-        Vector3 pushVector = hitDirection * pushDistance;
+        Vector3 pushVector = IsTagger(target) ? hitDirection * pushDistance * 10 : hitDirection * pushDistance;
         
         // Start the push coroutine to move the player smoothly
         StartCoroutine(SmoothPush(target.GetComponent<CharacterController>(), pushVector));
