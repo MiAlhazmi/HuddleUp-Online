@@ -1,13 +1,18 @@
 # Huddle-Up 🎮
 
+## TODO Online Functionality
+- [X] Import FishNet
+- [ ] Redesign the Game Control scripts & Player Controller scripts
+- [ ] Network Manager in PlyGrnd Scene
+- [ ] Add NetworkObj Component to player prefab
+- [ ] Add TransformNet Component ..etc to player
 
-## TODO
+## TODO Game Features
 #### High Priority:
 - [x] In Game Music
 - [x] Sound Effect when the tag is transferred
 - [x] Sound Effect when A player hits
 - [x] After one game is done, players are taken back to the lobby not to the main menu
-- [ ] Players 1-4 can leave the lobby individually
 
 #### Medium Priority:
 - [ ] Animation for color picking
