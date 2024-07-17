@@ -2,7 +2,7 @@
 
 ## TODO Online Functionality
 - [X] Import FishNet
-- [ ] Redesign the Game Control scripts & Player Controller scripts
+- [X] Redesign the Game Control scripts & Player Controller scripts
 - [ ] Network Manager in PlyGrnd Scene
 - [ ] Add NetworkObj Component to player prefab
 - [ ] Add TransformNet Component ..etc to player
