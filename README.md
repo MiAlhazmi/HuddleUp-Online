@@ -1,11 +1,13 @@
 # Huddle-Up 🎮
 
-## TODO Online Functionality
+## TODO Online Functionalities
 - [X] Import FishNet
 - [X] Redesign the Game Control scripts & Player Controller scripts
-- [ ] Network Manager in PlyGrnd Scene
-- [ ] Add NetworkObj Component to player prefab
-- [ ] Add TransformNet Component ..etc to player
+- [X] Network Manager in PlyGrnd Scene
+- [X] Add NetworkObj Component to player prefab
+- [X] Add TransformNet Component ..etc to player
+- [ ] Assign objects ownerships
+- [ ] Implement RPCs in the PlrCtrls & GameCtrls
 
 ## TODO Game Features
 #### High Priority:
