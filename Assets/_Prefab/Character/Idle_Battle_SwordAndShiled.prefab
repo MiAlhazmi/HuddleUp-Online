@@ -528,6 +528,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c2860815076646ad95ffc5b5af26dd5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6129807277546742272}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c2860815076646ad95ffc5b5af26dd5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 2c2860815076646ad95ffc5b5af26dd5, type: 3}
 --- !u!1 &304877517226338149 stripped
 GameObject:
@@ -728,6 +731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aa49a8fd38e4a1286a944988313e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  _playerVisual: {fileID: 0}
 --- !u!114 &7114571427333521360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -740,6 +745,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f386ce64fe8704474b25e7b01aa9f82a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _visual: {fileID: 0}
+  _playerColor: {r: 0, g: 0, b: 0, a: 0}
   isTagger: 0
 --- !u!114 &3638215914071369514
 MonoBehaviour:
@@ -753,6 +760,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48d3d89e47c341ea9f8feed7c8c9acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
   inputVector: {x: 0, y: 0}
   inputLook: {x: 0, y: 0}
 --- !u!114 &329742211741966518
@@ -843,6 +853,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _promptText: {fileID: 6980256393907304149}
+  _notifyText: {fileID: 0}
+  _notifyDuration: 3
+  _notifyFadeSpeed: 3
+  _notifyDurationTimer: 0
+  _notifyOn: 0
+  overlay: {fileID: 0}
+  _duration: 0
+  _fadeSpeed: 0
+  _durationTimer: 0
+  _tagOverlay: {fileID: 0}
 --- !u!114 &6129807277546742272
 MonoBehaviour:
   m_ObjectHideFlags: 0

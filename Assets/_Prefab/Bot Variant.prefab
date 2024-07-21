@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3804543500217721425, guid: c5f1d37e106f043fa9c9e5673ae2bbd8, type: 3}
+      propertyPath: <PrefabId>k__BackingField
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3804543500217721425, guid: c5f1d37e106f043fa9c9e5673ae2bbd8, type: 3}
+      propertyPath: <AssetPathHash>k__BackingField
+      value: 10605549741016239275
+      objectReference: {fileID: 0}
     - target: {fileID: 4096090207316682151, guid: c5f1d37e106f043fa9c9e5673ae2bbd8, type: 3}
       propertyPath: m_Name
       value: Bot Variant

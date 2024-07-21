@@ -535,6 +535,8 @@ GameObject:
   - component: {fileID: 5375323885018544208}
   - component: {fileID: 5650694156343239195}
   - component: {fileID: 5373889843574802044}
+  - component: {fileID: 3804543500217721425}
+  - component: {fileID: 8973802736543487002}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -769,6 +771,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48d3d89e47c341ea9f8feed7c8c9acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 3804543500217721425}
+  _networkObjectCache: {fileID: 3804543500217721425}
   inputVector: {x: 0, y: 0}
   inputLook: {x: 0, y: 0}
 --- !u!114 &526790794381167959
@@ -1061,6 +1066,98 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3804543500217721425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4096090207316682151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 7146274822075621499}
+  - {fileID: 8973802736543487002}
+  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
+  <NestedRootNetworkBehaviours>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: 0.18435927, y: 2.1251292, z: 0.054746818}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isSpawnable: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  <SceneId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 8639127239686937997
+--- !u!114 &8973802736543487002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4096090207316682151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 3804543500217721425}
+  _networkObjectCache: {fileID: 3804543500217721425}
+  _componentConfiguration: 0
+  _synchronizeParent: 0
+  _packing:
+    Position: 1
+    Rotation: 1
+    Scale: 0
+  _interpolation: 2
+  _extrapolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  _scaleThreshold: 1
+  _clientAuthoritative: 1
+  _sendToOwner: 1
+  _enableNetworkLod: 1
+  _interval: 1
+  _synchronizePosition: 1
+  _positionSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeRotation: 1
+  _rotationSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeScale: 1
+  _scaleSnapping:
+    X: 0
+    Y: 0
+    Z: 0
 --- !u!1 &7565619743282395769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,8 +1501,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5190167053283365548, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1294604509843274308}
+    - targetCorrespondingSourceObject: {fileID: 5190167053283365548, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7776111932771326734}
   m_SourcePrefab: {fileID: 100100000, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
+--- !u!95 &575839130995635274 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1561853070460686956, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
+  m_PrefabInstance: {fileID: 1319866626558535206}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1606479671591705547 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 295626841454427629, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
@@ -1416,3 +1524,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4849529913626347542, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
   m_PrefabInstance: {fileID: 1319866626558535206}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6509450628271322250 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5190167053283365548, guid: c9a302f833de44ed98f8d53a075e3d21, type: 3}
+  m_PrefabInstance: {fileID: 1319866626558535206}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1294604509843274308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6509450628271322250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3804543500217721425}
+  _networkObjectCache: {fileID: 0}
+  IgnoredParameters: []
+  _animator: {fileID: 575839130995635274}
+  _synchronizeWhenDisabled: 0
+  _smoothFloats: 1
+  _interpolation: 2
+  _clientAuthoritative: 1
+  _sendToOwner: 0
+--- !u!114 &7776111932771326734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6509450628271322250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3804543500217721425}
+  _networkObjectCache: {fileID: 0}
+  _componentConfiguration: 0
+  _synchronizeParent: 0
+  _packing:
+    Position: 1
+    Rotation: 1
+    Scale: 0
+  _interpolation: 2
+  _extrapolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  _scaleThreshold: 1
+  _clientAuthoritative: 1
+  _sendToOwner: 1
+  _enableNetworkLod: 1
+  _interval: 1
+  _synchronizePosition: 1
+  _positionSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeRotation: 1
+  _rotationSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeScale: 1
+  _scaleSnapping:
+    X: 0
+    Y: 0
+    Z: 0

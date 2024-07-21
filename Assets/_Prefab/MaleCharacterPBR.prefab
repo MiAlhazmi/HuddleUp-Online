@@ -1625,6 +1625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f386ce64fe8704474b25e7b01aa9f82a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _visual: {fileID: 0}
+  _playerColor: {r: 0, g: 0, b: 0, a: 0}
   isTagger: 0
 --- !u!95 &6281228940085105173
 Animator:
@@ -1829,6 +1831,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48d3d89e47c341ea9f8feed7c8c9acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
   inputVector: {x: 0, y: 0}
   inputLook: {x: 0, y: 0}
 --- !u!114 &5955709764290580485
@@ -1893,6 +1898,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _promptText: {fileID: 0}
+  _notifyText: {fileID: 0}
+  _notifyDuration: 3
+  _notifyFadeSpeed: 3
+  _notifyDurationTimer: 0
+  _notifyOn: 0
+  overlay: {fileID: 0}
+  _duration: 0
+  _fadeSpeed: 0
+  _durationTimer: 0
+  _tagOverlay: {fileID: 0}
 --- !u!114 &-6721809785262103193
 MonoBehaviour:
   m_ObjectHideFlags: 0
